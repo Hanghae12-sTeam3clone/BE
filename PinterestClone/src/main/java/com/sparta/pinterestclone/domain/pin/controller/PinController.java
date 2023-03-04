@@ -27,4 +27,17 @@ public class PinController {
         return pinService.getPins();
     }
 
+    @PatchMapping("/pins/{id}")
+    public MessageResponseDto updatepins(@PathVariable Long id,
+                                         @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                         @ModelAttribute PinRequestDto pinRequestDto)throws IOException{
+        return pinService.update(userDetails.getUser(),id,pinRequestDto);
+    }
+    @DeleteMapping("/pins/{id}")
+    public MessageResponseDto delete(@PathVariable Long id,
+                                     @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return pinService.delete(userDetails.getUser(),id);
+    }
+
+
 }
