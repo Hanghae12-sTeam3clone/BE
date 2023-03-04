@@ -75,7 +75,14 @@ public class WebSecurityConfig {
 
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        httpSecurity.authorizeRequests().antMatchers("/users/**").permitAll()
+        httpSecurity.authorizeRequests()
+                .antMatchers( "/v3/api-docs",
+                        "/v3/api-docs/**",
+                        "/swagger-ui.html",
+                        "/swagger-ui/**").permitAll()
+                .antMatchers("/swagger-ui/index.html").permitAll()
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/users/**").permitAll()
                 .antMatchers("/pins").permitAll()
 //                .antMatchers(HttpMethod.GET,"/api/posts/**").permitAll()
 //                .antMatchers(HttpMethod.GET,"/api/comments/**").permitAll()
