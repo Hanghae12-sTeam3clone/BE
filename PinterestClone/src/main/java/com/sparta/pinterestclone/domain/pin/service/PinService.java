@@ -4,7 +4,7 @@ package com.sparta.pinterestclone.domain.pin.service;
 import com.sparta.pinterestclone.domain.pin.ResponseDto.ApiResponse;
 import com.sparta.pinterestclone.domain.pin.ResponseDto.MessageResponseDto;
 import com.sparta.pinterestclone.domain.pin.ResponseDto.PinResponseDto;
-import com.sparta.pinterestclone.domain.pin.dto.CommentResponseDto;
+import com.sparta.pinterestclone.domain.pin.ResponseDto.CommentResponseDto;
 import com.sparta.pinterestclone.domain.pin.RequestDto.PinRequestDto;
 import com.sparta.pinterestclone.domain.pin.entity.Comment;
 import com.sparta.pinterestclone.domain.pin.entity.Pin;
