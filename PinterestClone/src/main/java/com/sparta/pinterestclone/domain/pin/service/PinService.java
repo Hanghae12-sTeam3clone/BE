@@ -111,5 +111,18 @@ public class PinService {
     }
 
 
+    public List<PinResponseDto> searchPosts(String keyword) {
+        List<Pin> pins = pinRepository.findByTitleContaining(keyword);
+        List<PinResponseDto> pinResponseDtos = new ArrayList<>();
+        for (Pin p : pins) {
+            p.getComments().sort(Comparator.comparing(Comment::getCreatedAt).reversed());
+            List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
+            for (Comment c : p.getComments()) {
+                commentResponseDtos.add(new CommentResponseDto(c));
+            }
+            pinResponseDtos.add(PinResponseDto.of(p, commentResponseDtos));
+        }
+        return pinResponseDtos;
+    }
 }
 
