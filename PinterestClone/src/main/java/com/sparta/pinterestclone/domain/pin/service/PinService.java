@@ -89,8 +89,6 @@ public class PinService {
         }else{
             throw new IllegalArgumentException("오류입니다.");
         }
-
-
     }
 
 
@@ -123,6 +121,18 @@ public class PinService {
             pinResponseDtos.add(PinResponseDto.of(p, commentResponseDtos));
         }
         return pinResponseDtos;
+    }
+
+    public PinResponseDto getIdPin(Long pinId) {
+        Pin pin = pinRepository.findById(pinId).orElseThrow(
+                () -> new IllegalArgumentException("게시물을 찾을 수 없습니다.")
+        );
+        pin.getComments().sort(Comparator.comparing(Comment::getCreatedAt).reversed());
+        List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
+        for (Comment c : pin.getComments()) {
+            commentResponseDtos.add(new CommentResponseDto(c));
+        }
+        return PinResponseDto.of(pin,commentResponseDtos);
     }
 }
 

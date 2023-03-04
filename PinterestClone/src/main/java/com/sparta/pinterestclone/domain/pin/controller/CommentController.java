@@ -3,6 +3,7 @@ package com.sparta.pinterestclone.domain.pin.controller;
 import com.sparta.pinterestclone.domain.pin.RequestDto.CommentRequestDto;
 import com.sparta.pinterestclone.domain.pin.service.CommentService;
 import com.sparta.pinterestclone.dto.MessageDto;
+import com.sparta.pinterestclone.respoinse.ApiDocumentResponse;
 import com.sparta.pinterestclone.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@ApiDocumentResponse
 public class CommentController {
     private final CommentService commentService;
 
