@@ -9,4 +9,7 @@ public interface PinRepository extends JpaRepository<Pin, Long> {
 
 
     List<Pin> findAllByOrderByCreatedAtDesc();
+
+    List<Pin> findByTitleContaining(String keyword);
+
 }
