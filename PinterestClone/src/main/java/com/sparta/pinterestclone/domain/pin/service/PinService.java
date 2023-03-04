@@ -2,6 +2,7 @@ package com.sparta.pinterestclone.domain.pin.service;
 
 
 import com.sparta.pinterestclone.domain.pin.ResponseDto.ApiResponse;
+import com.sparta.pinterestclone.domain.pin.ResponseDto.BooleanIdCheck;
 import com.sparta.pinterestclone.domain.pin.ResponseDto.MessageResponseDto;
 import com.sparta.pinterestclone.domain.pin.ResponseDto.PinResponseDto;
 import com.sparta.pinterestclone.domain.pin.dto.CommentResponseDto;
@@ -11,9 +12,15 @@ import com.sparta.pinterestclone.domain.pin.entity.Pin;
 import com.sparta.pinterestclone.domain.pin.exception.ErrorCode;
 import com.sparta.pinterestclone.domain.pin.repository.PinRepository;
 import com.sparta.pinterestclone.domain.user.entity.User;
+import com.sparta.pinterestclone.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,12 +36,12 @@ public class PinService {
     private final PinRepository pinRepository;
     private final S3Uploader s3Uploader;
     private final ApiResponse apiResponse;
-
+    private final BooleanIdCheck booleanIdCheck;
 
     @Transactional
     public MessageResponseDto create(User user, PinRequestDto pinRequestDto) throws IOException { //  , UserDetailsImpl userDetails 추가
         String image = "";
-//        System.out.println(pinRequestDto.getImage());
+        System.out.println(pinRequestDto.getImage());
 //        if (pinRequestDto.getImage() == null) {
 //            image = "";
 //        } else {
@@ -64,5 +71,45 @@ public class PinService {
         }
         return pinResponseDtos;
     }
+
+    //          상세 수정
+    @Transactional
+    public MessageResponseDto update(User user, Long id, PinRequestDto pinRequestDto)throws IOException {
+        Pin pin = pinRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("게시물이 없습니다.")
+        );
+        String image = "";
+        image = apiResponse.checkNullPinRequestDto(pin,pinRequestDto,image);
+        if(booleanIdCheck.CheckId(user,pin)){
+            pin.update(pinRequestDto, image);
+            return MessageResponseDto.builder()
+                    .msg("성공")
+                    .code(HttpStatus.OK)
+                    .build();
+        }else{
+            throw new IllegalArgumentException("오류입니다.");
+        }
+
+
+    }
+
+
+//              상세 게시글 삭제
+    public MessageResponseDto delete(User user, Long id) {
+        Pin pin = pinRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("게시물을 찾을 수 없습니다.")
+        );
+        if(booleanIdCheck.CheckId(user,pin)){
+            pinRepository.deleteById(id);
+            return MessageResponseDto.builder()
+                    .msg("성공")
+                    .code(HttpStatus.OK)
+                    .build();
+        }else{
+            throw new IllegalArgumentException("삭제를 실패했습니다.");
+        }
+    }
+
+
 }
 
