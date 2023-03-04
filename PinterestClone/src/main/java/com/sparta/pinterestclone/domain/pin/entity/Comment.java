@@ -44,6 +44,11 @@ public class Comment extends Timestamp{
         this.pin = pin;
     }
 
+    public void update(String comment, User user) {
+        this.comment = comment;
+        this.user = user;
+    }
+
     public static Comment of(String comment, Pin pin , User user){
       return builder()
               .comment(comment)
