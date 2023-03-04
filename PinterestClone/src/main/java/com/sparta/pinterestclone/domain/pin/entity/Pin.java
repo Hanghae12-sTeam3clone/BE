@@ -51,4 +51,10 @@ public class Pin extends Timestamp{
                 .user(user)
                 .build();
     }
+
+    public void update(PinRequestDto pinRequestDto, String image) {
+        this.title = pinRequestDto.getTitle();
+        this.content = pinRequestDto.getContent();
+        this.image = image;
+    }
 }
