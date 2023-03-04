@@ -37,9 +37,9 @@ public class Pin extends Timestamp{
 
 
     @Builder
-    public Pin(PinRequestDto requestDto,User user) {        //  사용자 클래스 변경 확인 요망
-        this.title = title;
-        this.content = content;
+    public Pin(PinRequestDto requestDto,User user, String image) {        //  사용자 클래스 변경 확인 요망
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
         this.image = image;
         this.user = user;
     }
@@ -47,9 +47,8 @@ public class Pin extends Timestamp{
     public static Pin of(PinRequestDto requestDto,String image ,User user) {//  사용자 클래스 변경 확인 요망
         return Pin.builder()
                 .requestDto(requestDto)
+                .image(image)
                 .user(user)
                 .build();
     }
-
-
 }
