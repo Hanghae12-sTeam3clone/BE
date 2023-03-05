@@ -60,17 +60,11 @@ public class PinService {
     @Transactional
     public List<PinResponseDto> getPins() {
         List<Pin> pins = pinRepository.findAllByOrderByCreatedAtDesc();
-        List<PinResponseDto> pinResponseDtos = new ArrayList<>();
-        for (Pin p : pins) {
-            p.getComments().sort(Comparator.comparing(Comment::getCreatedAt).reversed());
-            List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
-            for (Comment c : p.getComments()) {
-                commentResponseDtos.add(new CommentResponseDto(c));
-            }
-            pinResponseDtos.add(PinResponseDto.of(p, commentResponseDtos));
-        }
+        List<PinResponseDto> pinResponseDtos = getDtoList(pins);
         return pinResponseDtos;
     }
+
+
 
     //          상세 수정
     @Transactional
@@ -111,15 +105,7 @@ public class PinService {
 
     public List<PinResponseDto> searchPosts(String keyword) {
         List<Pin> pins = pinRepository.findByTitleContaining(keyword);
-        List<PinResponseDto> pinResponseDtos = new ArrayList<>();
-        for (Pin p : pins) {
-            p.getComments().sort(Comparator.comparing(Comment::getCreatedAt).reversed());
-            List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
-            for (Comment c : p.getComments()) {
-                commentResponseDtos.add(new CommentResponseDto(c));
-            }
-            pinResponseDtos.add(PinResponseDto.of(p, commentResponseDtos));
-        }
+        List<PinResponseDto> pinResponseDtos = getDtoList(pins);
         return pinResponseDtos;
     }
 
@@ -133,6 +119,21 @@ public class PinService {
             commentResponseDtos.add(new CommentResponseDto(c));
         }
         return PinResponseDto.of(pin,commentResponseDtos);
+    }
+
+
+
+    private static List<PinResponseDto> getDtoList(List<Pin> pins) {
+        List<PinResponseDto> pinResponseDtos = new ArrayList<>();
+        for (Pin p : pins) {
+            p.getComments().sort(Comparator.comparing(Comment::getCreatedAt).reversed());
+            List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
+            for (Comment c : p.getComments()) {
+                commentResponseDtos.add(new CommentResponseDto(c));
+            }
+            pinResponseDtos.add(PinResponseDto.of(p, commentResponseDtos));
+        }
+        return pinResponseDtos;
     }
 }
 
