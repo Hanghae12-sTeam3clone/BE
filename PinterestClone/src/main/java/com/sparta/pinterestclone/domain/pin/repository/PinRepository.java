@@ -12,4 +12,5 @@ public interface PinRepository extends JpaRepository<Pin, Long> {
 
     List<Pin> findByTitleContaining(String keyword);
 
+    List<Pin> findByUserId(Long id);
 }

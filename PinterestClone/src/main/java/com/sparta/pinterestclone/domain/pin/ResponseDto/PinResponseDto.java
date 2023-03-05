@@ -37,4 +37,11 @@ public class PinResponseDto {
                 .comments(commentResponseDtos)
                 .build();
     }
+
+    public static PinResponseDto of(Pin pin){
+        return PinResponseDto.builder()
+                .pin(pin)
+                .build();
+    }
+
 }
