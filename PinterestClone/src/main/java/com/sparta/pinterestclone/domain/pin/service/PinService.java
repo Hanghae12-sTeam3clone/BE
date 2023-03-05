@@ -15,6 +15,7 @@ import com.sparta.pinterestclone.domain.user.entity.User;
 import com.sparta.pinterestclone.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -134,5 +135,19 @@ public class PinService {
         }
         return PinResponseDto.of(pin,commentResponseDtos);
     }
+
+    @Transactional
+    public List<PinResponseDto> getMyPage(User user) {
+
+        List<Pin> pins = pinRepository.findByUserId(user.getId());
+        List<PinResponseDto> pinList = new ArrayList<>();
+
+        for (Pin p : pins) {
+            pinList.add(PinResponseDto.of(p));
+        }
+        return pinList;
+
+    }
+
 }
 
