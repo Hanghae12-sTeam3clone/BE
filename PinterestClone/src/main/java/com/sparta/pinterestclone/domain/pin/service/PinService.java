@@ -7,19 +7,27 @@ import com.sparta.pinterestclone.domain.comment.dto.CommentResponseDto;
 import com.sparta.pinterestclone.domain.pin.dto.PinResponseDto;
 import com.sparta.pinterestclone.domain.comment.entity.Comment;
 import com.sparta.pinterestclone.domain.pin.entity.Pin;
+import com.sparta.pinterestclone.domain.user.repository.UserRepository;
+import com.sparta.pinterestclone.domain.user.service.UserService;
 import com.sparta.pinterestclone.utils.dto.MessageDto;
 import com.sparta.pinterestclone.domain.pin.repository.PinRepository;
 import com.sparta.pinterestclone.domain.user.entity.User;
 import com.sparta.pinterestclone.domain.user.entity.UserRoleEnum;
 import com.sparta.pinterestclone.exception.ApiException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Function;
 
 import static com.sparta.pinterestclone.exception.Exception.*;
 
@@ -32,6 +40,8 @@ public class PinService {
     private final PinRepository pinRepository;
     private final S3Uploader s3Uploader;
     private final ApiResponse apiResponse;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     // Pin 저장
     @Transactional
@@ -44,10 +54,11 @@ public class PinService {
         return new MessageDto("핀 저장 성공", HttpStatus.OK);
     }
 
-    // Pin 전체 조회하기
+//     Pin 전체 조회하기
     @Transactional
-    public List<PinResponseDto> getPins() {
-        List<Pin> pins = pinRepository.findAllByOrderByCreatedAtDesc();
+    public List<PinResponseDto> getPintList(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Pin> pins = pinRepository.findAllByOrderByCreatedAtDesc(pageable);
         List<PinResponseDto> pinResponseDtos = getDtoList(pins);
         return pinResponseDtos;
     }
@@ -103,9 +114,10 @@ public class PinService {
         }
     }
 
-    // Pin 검색 하기
-    public List<PinResponseDto> searchPosts(String keyword) {
-        List<Pin> pins = pinRepository.findByTitleContaining(keyword);
+//     Pin 검색 하기
+    public List<PinResponseDto> searchPosts(String keyword , int page ,int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Pin> pins = pinRepository.findByTitleContaining(pageable,keyword);
         List<PinResponseDto> pinResponseDtos = getDtoList(pins);
         return pinResponseDtos;
     }
@@ -125,7 +137,7 @@ public class PinService {
     }
 
     // 전체 리스트 가져오기 메서드
-    private static List<PinResponseDto> getDtoList(List<Pin> pins) {
+    private static List<PinResponseDto> getDtoList(Page<Pin> pins) {
         List<PinResponseDto> pinResponseDtos = new ArrayList<>();
         for (Pin p : pins) {
             p.getComments().sort(Comparator.comparing(Comment::getCreatedAt).reversed());
@@ -142,6 +154,7 @@ public class PinService {
     private static boolean checkId(User user, Pin pin) {
         return Objects.equals(user.getId(), pin.getUser().getId()) || user.getRole() == UserRoleEnum.ADMIN;
     }
+
 
 
 }
