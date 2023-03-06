@@ -1,6 +1,7 @@
 package com.sparta.pinterestclone.domain.pin.service;
 
 import com.sparta.pinterestclone.domain.pin.ResponseDto.MessageResponseDto;
+import com.sparta.pinterestclone.domain.pin.ResponseDto.PinLikeResponseDto;
 import com.sparta.pinterestclone.domain.pin.entity.Pin;
 import com.sparta.pinterestclone.domain.pin.entity.PinLike;
 import com.sparta.pinterestclone.domain.pin.repository.PinLikeRepository;
@@ -22,7 +23,7 @@ public class PinLikeService {
     private final PinRepository pinRepository;
 
     @Transactional
-    public MessageResponseDto likeup(Long id, UserDetailsImpl userDetails) {
+    public PinLikeResponseDto likeup(Long id, UserDetailsImpl userDetails) {
 
         //id값으로 게시물 확인
         Pin pin = pinRepository.findById(id).orElseThrow(
@@ -35,12 +36,12 @@ public class PinLikeService {
             PinLike pinLike = PinLike.of(userDetails.getUser(),pin);
             pinLikeRepository.save(pinLike);
         }
-        return new MessageResponseDto("좋아요", HttpStatus.OK);
+        return PinLikeResponseDto.of(true,"좋아요 성공",HttpStatus.OK);
     }
 
 
     @Transactional
-    public MessageResponseDto likedown(Long id, UserDetailsImpl userDetails) {
+    public PinLikeResponseDto likedown(Long id, UserDetailsImpl userDetails) {
 
         //id값으로 게시물 확인
         Pin pin = pinRepository.findById(id).orElseThrow(
@@ -52,8 +53,7 @@ public class PinLikeService {
         if (!found.isEmpty()) {
             pinLikeRepository.delete(found.get());
         }
-
-        return new MessageResponseDto("좋아요 삭제", HttpStatus.OK);
+        return PinLikeResponseDto.of(false,"좋아요 실패",HttpStatus.OK);
     }
 
 }
