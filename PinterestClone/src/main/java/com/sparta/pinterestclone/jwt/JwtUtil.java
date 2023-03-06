@@ -1,5 +1,8 @@
 package com.sparta.pinterestclone.jwt;
 
+import com.sparta.pinterestclone.domain.ref.RefreshToken;
+import com.sparta.pinterestclone.domain.ref.RefreshTokenRepository;
+import com.sparta.pinterestclone.domain.ref.TokenDto;
 import com.sparta.pinterestclone.domain.user.entity.UserRoleEnum;
 import com.sparta.pinterestclone.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
@@ -18,25 +21,30 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Optional;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
-
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final UserDetailsServiceImpl userDetailsService;
+    public static final String REFRESH_TOKEN = "Refresh_Token";
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORIZATION_KEY = "auth";
     private static final String BEARER_PREFIX = "Bearer ";
     private static final long TOKEN_TIME = 60 * 60 * 1000L;
+    private static final long REFRESH_TIME = 6000000 * 1000L;
 
     @Value("${jwt.secret.key}")
     private String secretKey;
     private Key key;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-    private final UserDetailsServiceImpl userDetailsService;
+
 
     @PostConstruct
     public void init() {
@@ -44,22 +52,25 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(bytes);
     }
 
-    public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+    public String resolveToken(HttpServletRequest request,String type) {
+        String bearerToken = type.equals("Access")?request.getHeader(AUTHORIZATION_HEADER) : request.getHeader(REFRESH_TOKEN);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
         return null;
     }
 
-    public String createToken(String username, UserRoleEnum role) {
+    public TokenDto createAllToken(String email){
+        return new TokenDto(createToken(email, "Access"), createToken(email, "Refresh"));
+    }
+    public String createToken(String username, String type) {
         Date date = new Date();
+        long time = type.equals("Access") ? TOKEN_TIME : REFRESH_TIME;
 
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(username)
-                        .claim(AUTHORIZATION_KEY, role)
-                        .setExpiration(new Date(date.getTime() + TOKEN_TIME))
+                        .setExpiration(new Date(date.getTime() + time))
                         .setIssuedAt(date)
                         .signWith(key, signatureAlgorithm)
                         .compact();
@@ -81,6 +92,11 @@ public class JwtUtil {
         return false;
     }
 
+    public Boolean refreshTokenValidation(String token){
+        if(!validateToken(token)) return false;
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findAllByEmail(token);
+        return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken().substring(7));
+    }
     public Claims getUserInfoFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
@@ -89,5 +105,11 @@ public class JwtUtil {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
-
+    public String getEmail(String token){
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+    }
+    public void setHeader(HttpServletResponse response,TokenDto tokenDto){
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, tokenDto.getAuthorization());
+        response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefresh_Token());
+    }
 }

@@ -1,5 +1,6 @@
 package com.sparta.pinterestclone.domain.user.service;
 
+import com.sparta.pinterestclone.domain.ref.*;
 import com.sparta.pinterestclone.domain.user.dto.LoginRequestDto;
 import com.sparta.pinterestclone.domain.user.dto.SignupRequestDto;
 import com.sparta.pinterestclone.domain.user.entity.User;
@@ -7,17 +8,16 @@ import com.sparta.pinterestclone.domain.user.entity.UserRoleEnum;
 import com.sparta.pinterestclone.domain.user.repository.UserRepository;
 import com.sparta.pinterestclone.dto.MessageDto;
 import com.sparta.pinterestclone.exception.ApiException;
-import com.sparta.pinterestclone.exception.Exception;
 import com.sparta.pinterestclone.jwt.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 import static com.sparta.pinterestclone.exception.Exception.*;
@@ -25,14 +25,14 @@ import static com.sparta.pinterestclone.exception.Exception.*;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-
+    private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Transactional(readOnly = true)
-    public ResponseEntity<MessageDto> login(LoginRequestDto loginRequestDto) {
+    public ApiResponseDto<SuccessResponse> login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
 
         String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
@@ -46,12 +46,18 @@ public class UserService {
             throw new ApiException(INVALID_PASSWORD);
         }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.get().getEmail(), user.get().getRole()));
+        TokenDto tokenDto = jwtUtil.createAllToken(email);
 
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body(new MessageDto("로그인 성공", HttpStatus.OK));
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findAllByEmail(email);
+
+        if(refreshToken.isPresent()){
+            refreshTokenRepository.save(refreshToken.get().updateToken(tokenDto.getRefresh_Token()));
+        }else{
+            RefreshToken newToken = new RefreshToken(tokenDto.getRefresh_Token(), email);
+            refreshTokenRepository.save(newToken);
+        }
+        jwtUtil.setHeader(response, tokenDto);
+        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "성공"));
     }
 
     public ResponseEntity<MessageDto> signup(SignupRequestDto signupRequestDto) {

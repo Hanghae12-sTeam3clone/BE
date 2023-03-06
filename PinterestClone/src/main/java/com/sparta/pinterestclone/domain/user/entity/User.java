@@ -1,5 +1,6 @@
 package com.sparta.pinterestclone.domain.user.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,6 +28,7 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
+    @Builder
     public User(String email, String password, String nickname, UserRoleEnum role) {
         this.email = email;
         this.password = password;
