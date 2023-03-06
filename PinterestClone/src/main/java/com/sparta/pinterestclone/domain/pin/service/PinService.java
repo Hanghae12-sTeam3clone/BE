@@ -4,16 +4,17 @@ package com.sparta.pinterestclone.domain.pin.service;
 import com.sparta.pinterestclone.domain.pin.dto.PinRequestDto;
 import com.sparta.pinterestclone.domain.pin.dto.ApiResponse;
 import com.sparta.pinterestclone.domain.pin.comment.dto.CommentResponseDto;
-import com.sparta.pinterestclone.domain.pin.dto.MessageResponseDto;
 import com.sparta.pinterestclone.domain.pin.dto.PinResponseDto;
 import com.sparta.pinterestclone.domain.pin.comment.entity.Comment;
 import com.sparta.pinterestclone.domain.pin.entity.Pin;
+import com.sparta.pinterestclone.dto.MessageDto;
 import com.sparta.pinterestclone.exception.ErrorCode;
 import com.sparta.pinterestclone.domain.pin.repository.PinRepository;
 import com.sparta.pinterestclone.domain.user.entity.User;
 import com.sparta.pinterestclone.domain.user.entity.UserRoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,13 +36,13 @@ public class PinService {
 
     // Pin 저장
     @Transactional
-    public MessageResponseDto create(User user, PinRequestDto pinRequestDto) throws IOException {
+    public MessageDto create(User user, PinRequestDto pinRequestDto) throws IOException {
 
         String image = s3Uploader.upload(pinRequestDto.getImage());
         //  작성 글 저장
         Pin pin = pinRepository.save(Pin.of(pinRequestDto, image, user));
 
-        return apiResponse.success(ErrorCode.CONSTRUCT_SUCCESS.getMessage());
+        return new MessageDto("핀 저장 성공", HttpStatus.OK);
     }
 
     // Pin 전체 조회하기
@@ -67,7 +68,7 @@ public class PinService {
 
     // Pin 상세 수정
     @Transactional
-    public MessageResponseDto update(User user, Long id, PinRequestDto pinRequestDto) throws IOException {
+    public ResponseEntity<PinResponseDto> update(User user, Long id, PinRequestDto pinRequestDto) throws IOException {
         Pin pin = pinRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("게시물이 없습니다.")
         );
@@ -76,25 +77,24 @@ public class PinService {
 
         if (checkId(user, pin)) {
             pin.update(pinRequestDto, image);
-            return MessageResponseDto.builder()
-                    .msg("성공")
-                    .code(HttpStatus.OK)
-                    .build();
-        } else {
+
+            return ResponseEntity.ok().body(PinResponseDto.of(pin));
+
+            } else {
             throw new IllegalArgumentException("오류입니다.");
         }
     }
 
     //  Pin 상세 삭제
-    public MessageResponseDto delete(User user, Long id) {
+    public MessageDto delete(User user, Long id) {
         Pin pin = pinRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("게시물을 찾을 수 없습니다.")
         );
         if (checkId(user, pin)) {
             pinRepository.deleteById(id);
-            return MessageResponseDto.builder()
+            return MessageDto.builder()
                     .msg("성공")
-                    .code(HttpStatus.OK)
+                    .httpStatus(HttpStatus.OK)
                     .build();
         } else {
             throw new IllegalArgumentException("삭제를 실패했습니다.");

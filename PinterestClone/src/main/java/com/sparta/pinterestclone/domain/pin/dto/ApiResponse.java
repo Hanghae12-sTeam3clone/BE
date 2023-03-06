@@ -2,6 +2,7 @@ package com.sparta.pinterestclone.domain.pin.dto;
 
 import com.sparta.pinterestclone.domain.pin.entity.Pin;
 import com.sparta.pinterestclone.domain.pin.service.S3Uploader;
+import com.sparta.pinterestclone.dto.MessageDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,21 +16,23 @@ import java.io.IOException;
 public class ApiResponse {
     private final S3Uploader s3Uploader;
 
-    public MessageResponseDto success(String msg){
-        return MessageResponseDto.builder()
+    public MessageDto success(String msg) {
+        return MessageDto.builder()
                 .msg(msg)
-                .code(HttpStatus.OK)
+                .httpStatus(HttpStatus.OK)
                 .build();
     }
 
-    public String checkNullPinRequestDto(Pin pin, PinRequestDto pinRequestDto, String image)throws IOException{
-        if(pinRequestDto.getImage()==null||pinRequestDto.getImage().isEmpty()){
+    public String checkNullPinRequestDto(Pin pin, PinRequestDto pinRequestDto, String image) throws IOException {
+        if (pinRequestDto.getImage() == null || pinRequestDto.getImage().isEmpty()) {
             image = pin.getImage();
-        }else{
+        } else {
             image = s3Uploader.upload(pinRequestDto.getImage());
-        }if(pinRequestDto.getTitle()==null){
+        }
+        if (pinRequestDto.getTitle() == null) {
             pinRequestDto.setTitle(pin.getTitle());
-        }if(pinRequestDto.getContent()==null){
+        }
+        if (pinRequestDto.getContent() == null) {
             pinRequestDto.setContent(pin.getContent());
         }
         return image;

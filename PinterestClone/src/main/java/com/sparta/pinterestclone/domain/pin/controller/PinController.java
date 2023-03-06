@@ -1,13 +1,15 @@
 package com.sparta.pinterestclone.domain.pin.controller;
 
-import com.sparta.pinterestclone.domain.pin.dto.MessageResponseDto;
 import com.sparta.pinterestclone.domain.pin.dto.PinRequestDto;
 import com.sparta.pinterestclone.domain.pin.dto.PinResponseDto;
 import com.sparta.pinterestclone.domain.pin.service.PinService;
+import com.sparta.pinterestclone.dto.MessageDto;
 import com.sparta.pinterestclone.utils.ApiDocumentResponse;
 import com.sparta.pinterestclone.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +34,7 @@ public class PinController {
 
     @Operation(summary = "Pin 생성 요청", description = "Pin 추가됩니다.", tags = {"Pin"})
     @PostMapping("/pins/create")
-    public MessageResponseDto create(@ModelAttribute PinRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    public MessageDto create(@ModelAttribute PinRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         return pinService.create(userDetails.getUser(), requestDto);
     }
 
@@ -50,17 +52,19 @@ public class PinController {
 
     @Operation(summary = "Pin 수정 요청", description = "Pin Id를 통해 Pin을 수정 합니다.", tags = {"Pin"})
     @PatchMapping("/pins/{pinId}")
-    public MessageResponseDto updatepins(@PathVariable Long pinId,
-                                         @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                         @ModelAttribute PinRequestDto pinRequestDto) throws IOException {
+    public ResponseEntity<PinResponseDto> updatepins(@PathVariable Long pinId,
+                                                    @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                    @ModelAttribute PinRequestDto pinRequestDto) throws IOException {
+
         return pinService.update(userDetails.getUser(), pinId, pinRequestDto);
     }
 
     @Operation(summary = "Pin 삭제 요청", description = "Pin Id를 통해 Pin을 삭제합니다.", tags = {"Pin"})
     @DeleteMapping("/pins/{pinId}")
-    public MessageResponseDto delete(@PathVariable Long pinId,
+    public MessageDto delete(@PathVariable Long pinId,
                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return pinService.delete(userDetails.getUser(), pinId);
+        pinService.delete(userDetails.getUser(), pinId);
+        return new MessageDto("핀 삭제 성공", HttpStatus.OK);
     }
 
 
