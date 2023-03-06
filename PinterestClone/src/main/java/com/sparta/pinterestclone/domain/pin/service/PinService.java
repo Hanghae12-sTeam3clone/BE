@@ -123,19 +123,6 @@ public class PinService {
     }
 
     
-    private static List<PinResponseDto> getDtoList(List<Pin> pins) {
-        List<PinResponseDto> pinResponseDtos = new ArrayList<>();
-        for (Pin p : pins) {
-            p.getComments().sort(Comparator.comparing(Comment::getCreatedAt).reversed());
-            List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
-            for (Comment c : p.getComments()) {
-                commentResponseDtos.add(new CommentResponseDto(c));
-            }
-            pinResponseDtos.add(PinResponseDto.of(p, commentResponseDtos));
-        }
-        return pinResponseDtos;
-    }
-
     @Transactional
     public List<PinResponseDto> getMyPage(User user) {
 
@@ -147,6 +134,19 @@ public class PinService {
         }
         return pinList;
 
+    }
+
+    private static List<PinResponseDto> getDtoList(List<Pin> pins) {
+        List<PinResponseDto> pinResponseDtos = new ArrayList<>();
+        for (Pin p : pins) {
+            p.getComments().sort(Comparator.comparing(Comment::getCreatedAt).reversed());
+            List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
+            for (Comment c : p.getComments()) {
+                commentResponseDtos.add(new CommentResponseDto(c));
+            }
+            pinResponseDtos.add(PinResponseDto.of(p, commentResponseDtos));
+        }
+        return pinResponseDtos;
     }
 
 

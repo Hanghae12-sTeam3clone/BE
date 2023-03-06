@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 public class PinResponseDto {
-
+    private Long id;
     private String title;
     private String content;
     private String nickname;
@@ -21,6 +21,7 @@ public class PinResponseDto {
 
     @Builder
     public PinResponseDto(Pin pin, List<CommentResponseDto> comments) {
+        id = pin.getId();;
         title = pin.getTitle();
         content = pin.getContent();
         nickname = pin.getUser().getNickname();
