@@ -1,5 +1,7 @@
 package com.sparta.pinterestclone.domain.user.controller;
 
+import com.sparta.pinterestclone.domain.ref.ApiResponseDto;
+import com.sparta.pinterestclone.domain.ref.SuccessResponse;
 import com.sparta.pinterestclone.domain.user.dto.LoginRequestDto;
 import com.sparta.pinterestclone.domain.user.dto.SignupRequestDto;
 import com.sparta.pinterestclone.domain.user.service.UserService;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
@@ -31,7 +34,7 @@ public class UserController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<MessageDto> login(@RequestBody LoginRequestDto loginRequestDto) {
-        return userService.login(loginRequestDto);
+    public ApiResponseDto<SuccessResponse> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+        return userService.login(loginRequestDto,response);
     }
 }

@@ -25,7 +25,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String token = jwtUtil.resolveToken(request);
+        String token = jwtUtil.resolveToken(request,"Access");
+        String refreshToken = jwtUtil.resolveToken(request,"Refresh");
 
         if (token == null) {
             request.setAttribute("exception", Exception.NOT_FOUND_TOKEN);
@@ -39,7 +40,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        Claims info = jwtUtil.getUserInfoFromToken(token);
+
+        Claims info = jwtUtil.getUserInfoFromToken(refreshToken);
         try {
             setAuthentication(info.getSubject());
         } catch (UsernameNotFoundException e) {
