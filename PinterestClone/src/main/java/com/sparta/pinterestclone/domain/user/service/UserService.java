@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Service
@@ -31,10 +30,10 @@ public class UserService {
     @Transactional(readOnly = true)
     public ResponseEntity<MessageDto> login(LoginRequestDto loginRequestDto) {
 
-        String username = loginRequestDto.getUsername();
+        String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
 
-        Optional<User> user = userRepository.findByUsername(username);
+        Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()) {
             throw new IllegalArgumentException("해당하는 유저가 존재하지 않습니다");
         }
@@ -44,7 +43,7 @@ public class UserService {
         }
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.get().getUsername(), user.get().getRole()));
+        headers.set(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.get().getEmail(), user.get().getRole()));
 
         return ResponseEntity.ok()
                 .headers(headers)
@@ -53,11 +52,11 @@ public class UserService {
 
     public ResponseEntity<MessageDto> signup(SignupRequestDto signupRequestDto) {
 
-        String username = signupRequestDto.getUsername();
+        String email = signupRequestDto.getEmail();
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
         String nickname = signupRequestDto.getNickname();
 
-        Optional<User> foundUsername = userRepository.findByUsername(username);
+        Optional<User> foundUsername = userRepository.findByEmail(email);
         if (foundUsername.isPresent()) {
             throw new IllegalArgumentException("중복된 유저가 존재합니다.");
         }
@@ -76,7 +75,7 @@ public class UserService {
             role = UserRoleEnum.ADMIN;
         }
 
-        User user = new User(username, password, nickname, role);
+        User user = new User(email, password, nickname, role);
         userRepository.save(user);
         return ResponseEntity.ok()
                 .body(new MessageDto("회원가입 완료", HttpStatus.OK));

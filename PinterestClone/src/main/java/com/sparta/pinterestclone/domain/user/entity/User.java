@@ -15,7 +15,7 @@ public class User {
     private Long id;
 
     @Column(nullable = false, length = 32)
-    private String username;
+    private String email;
 
     @Column(nullable = false, length = 32)
     private String nickname;
@@ -27,8 +27,8 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
-    public User(String username, String password, String nickname, UserRoleEnum role) {
-        this.username = username;
+    public User(String email, String password, String nickname, UserRoleEnum role) {
+        this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.role = role;
