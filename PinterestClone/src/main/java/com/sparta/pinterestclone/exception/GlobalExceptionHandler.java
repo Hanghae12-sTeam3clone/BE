@@ -1,6 +1,6 @@
 package com.sparta.pinterestclone.exception;
 
-import com.sparta.pinterestclone.dto.MessageDto;
+import com.sparta.pinterestclone.utils.dto.MessageDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

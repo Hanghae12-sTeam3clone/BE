@@ -1,8 +1,8 @@
 package com.sparta.pinterestclone.config;
 
 import com.sparta.pinterestclone.exception.CustomAuthenticationEntryPoint;
-import com.sparta.pinterestclone.jwt.JwtAuthFilter;
-import com.sparta.pinterestclone.jwt.JwtUtil;
+import com.sparta.pinterestclone.auth.jwt.JwtAuthFilter;
+import com.sparta.pinterestclone.auth.jwt.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;

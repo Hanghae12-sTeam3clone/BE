@@ -2,7 +2,7 @@ package com.sparta.pinterestclone.domain.pin.dto;
 
 import com.sparta.pinterestclone.domain.pin.entity.Pin;
 import com.sparta.pinterestclone.domain.pin.service.S3Uploader;
-import com.sparta.pinterestclone.dto.MessageDto;
+import com.sparta.pinterestclone.utils.dto.MessageDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

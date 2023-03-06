@@ -28,12 +28,12 @@ jwt:
 cloud:
   aws:
     credentials:
-      access-key: AKIAZEZXAJTJ24LGRJN4
-      secret-key: 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
+      access-key: 'AKIATE75SQ3GCQMBX374'
+      secret-key: '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'
     region:
       static: 'ap-northeast-2'
     s3:
-      bucket: 'iloveyouhwj'
+      bucket: 'myclonepinterestcl'
     stack:
       auto: false
 
