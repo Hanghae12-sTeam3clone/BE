@@ -1,6 +1,7 @@
 package com.sparta.pinterestclone.domain.pin.entity;
 
 import com.sparta.pinterestclone.domain.user.entity.User;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,11 +15,24 @@ public class PinLike {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "PIN_ID", nullable = false)
     private Pin pin;
+
+    @Builder
+    public PinLike(User user, Pin pin) {
+        this.user = user;
+        this.pin = pin;
+    }
+
+    public static PinLike of(User user, Pin pin) {
+        return PinLike.builder()
+                .user(user)
+                .pin(pin)
+                .build();
+    }
 }
