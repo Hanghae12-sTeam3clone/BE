@@ -36,7 +36,7 @@ public class PinLikeService {
             PinLike pinLike = PinLike.of(userDetails.getUser(),pin);
             pinLikeRepository.save(pinLike);
         }
-        return PinLikeResponseDto.of(true,"좋아요 성공",HttpStatus.OK);
+        return PinLikeResponseDto.of(true,"좋아요 성공", HttpStatus.OK);
     }
 
 
@@ -53,7 +53,7 @@ public class PinLikeService {
         if (!found.isEmpty()) {
             pinLikeRepository.delete(found.get());
         }
-        return PinLikeResponseDto.of(false,"좋아요 실패",HttpStatus.OK);
+        return PinLikeResponseDto.of(false,"좋아요 취소", HttpStatus.OK);
     }
 
 }

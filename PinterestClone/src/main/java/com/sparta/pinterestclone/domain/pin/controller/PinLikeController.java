@@ -1,6 +1,7 @@
 package com.sparta.pinterestclone.domain.pin.controller;
 
 import com.sparta.pinterestclone.domain.pin.ResponseDto.MessageResponseDto;
+import com.sparta.pinterestclone.domain.pin.ResponseDto.PinLikeResponseDto;
 import com.sparta.pinterestclone.domain.pin.service.PinLikeService;
 import com.sparta.pinterestclone.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +18,13 @@ public class PinLikeController {
 
     //좋아요
     @PostMapping("/{pinId}/likes")
-    public MessageResponseDto likeup(@PathVariable Long pinId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public PinLikeResponseDto likeup(@PathVariable Long pinId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return pinLikeService.likeup(pinId, userDetails);
     }
 
     //좋아요 취소
     @DeleteMapping("/{pinId}/likes")
-    public MessageResponseDto likedown(@PathVariable Long pinId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public PinLikeResponseDto likedown(@PathVariable Long pinId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return pinLikeService.likedown(pinId, userDetails);
     }
 }
