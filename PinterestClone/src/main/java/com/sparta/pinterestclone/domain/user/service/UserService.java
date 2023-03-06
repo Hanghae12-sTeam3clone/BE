@@ -6,6 +6,8 @@ import com.sparta.pinterestclone.domain.user.entity.User;
 import com.sparta.pinterestclone.domain.user.entity.UserRoleEnum;
 import com.sparta.pinterestclone.domain.user.repository.UserRepository;
 import com.sparta.pinterestclone.dto.MessageDto;
+import com.sparta.pinterestclone.exception.ApiException;
+import com.sparta.pinterestclone.exception.Exception;
 import com.sparta.pinterestclone.jwt.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+
+import static com.sparta.pinterestclone.exception.Exception.*;
 
 @Service
 @RequiredArgsConstructor
@@ -35,11 +39,11 @@ public class UserService {
 
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()) {
-            throw new IllegalArgumentException("해당하는 유저가 존재하지 않습니다");
+            throw new ApiException(NOT_FOUND_USER);
         }
 
         if (!passwordEncoder.matches(password, user.get().getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new ApiException(INVALID_PASSWORD);
         }
 
         HttpHeaders headers = new HttpHeaders();
@@ -56,14 +60,14 @@ public class UserService {
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
         String nickname = signupRequestDto.getNickname();
 
-        Optional<User> foundUsername = userRepository.findByEmail(email);
-        if (foundUsername.isPresent()) {
-            throw new IllegalArgumentException("중복된 유저가 존재합니다.");
+        Optional<User> foundEmail = userRepository.findByEmail(email);
+        if (foundEmail.isPresent()) {
+            throw new ApiException(DUPLICATED_EMAIL);
         }
 
         Optional<User> foundNickname = userRepository.findByNickname(nickname);
         if (foundNickname.isPresent()) {
-            throw new IllegalArgumentException("중복된 닉네임이 존재합니다.");
+            throw new ApiException(DUPLICATED_NICKNAME);
         }
 
         UserRoleEnum role = UserRoleEnum.USER;

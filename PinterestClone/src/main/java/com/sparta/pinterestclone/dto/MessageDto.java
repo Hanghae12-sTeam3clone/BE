@@ -16,4 +16,10 @@ public class MessageDto {
         this.statusCode = httpStatus.value();
     }
 
+    public static MessageDto of(String message, HttpStatus status) {
+        return MessageDto.builder()
+                .msg(message)
+                .httpStatus(status)
+                .build();
+    }
 }

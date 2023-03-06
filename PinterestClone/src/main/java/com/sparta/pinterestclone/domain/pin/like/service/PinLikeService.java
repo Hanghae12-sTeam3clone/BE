@@ -5,6 +5,8 @@ import com.sparta.pinterestclone.domain.pin.entity.Pin;
 import com.sparta.pinterestclone.domain.pin.like.entity.PinLike;
 import com.sparta.pinterestclone.domain.pin.like.repository.PinLikeRepository;
 import com.sparta.pinterestclone.domain.pin.repository.PinRepository;
+import com.sparta.pinterestclone.exception.ApiException;
+import com.sparta.pinterestclone.exception.Exception;
 import com.sparta.pinterestclone.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +28,7 @@ public class PinLikeService {
 
         //id값으로 게시물 확인
         Pin pin = pinRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("해당하는 게시물이 없습니다.")
+                () -> new ApiException(Exception.NOT_FOUND_PIN)
         );
 
         // 매개변수 pin과 getUser로 PinLike에 있는지 확인 후 없다면 repository에 저장
@@ -44,7 +46,7 @@ public class PinLikeService {
 
         //id값으로 게시물 확인
         Pin pin = pinRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("해당하는 게시물이 없습니다.")
+                () -> new ApiException(Exception.NOT_FOUND_PIN)
         );
 
         // 매개변수 pin과 getUser로 PinLike에 있는지 확인 후 없다면 repository에서 삭제

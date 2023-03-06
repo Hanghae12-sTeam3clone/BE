@@ -8,10 +8,10 @@ import com.sparta.pinterestclone.domain.pin.dto.PinResponseDto;
 import com.sparta.pinterestclone.domain.pin.comment.entity.Comment;
 import com.sparta.pinterestclone.domain.pin.entity.Pin;
 import com.sparta.pinterestclone.dto.MessageDto;
-import com.sparta.pinterestclone.exception.ErrorCode;
 import com.sparta.pinterestclone.domain.pin.repository.PinRepository;
 import com.sparta.pinterestclone.domain.user.entity.User;
 import com.sparta.pinterestclone.domain.user.entity.UserRoleEnum;
+import com.sparta.pinterestclone.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+
+import static com.sparta.pinterestclone.exception.Exception.*;
 
 
 @Service
@@ -56,7 +55,7 @@ public class PinService {
     // Pin 상세 조회하기
     public PinResponseDto getIdPin(Long pinId) {
         Pin pin = pinRepository.findById(pinId).orElseThrow(
-                () -> new IllegalArgumentException("게시물을 찾을 수 없습니다.")
+                () -> new ApiException(NOT_FOUND_PIN)
         );
         pin.getComments().sort(Comparator.comparing(Comment::getCreatedAt).reversed());
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
@@ -69,26 +68,29 @@ public class PinService {
     // Pin 상세 수정
     @Transactional
     public ResponseEntity<PinResponseDto> update(User user, Long id, PinRequestDto pinRequestDto) throws IOException {
-        Pin pin = pinRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("게시물이 없습니다.")
-        );
+        Optional<Pin> pin = pinRepository.findById(id);
+
+        if(pin.isEmpty()) {
+            throw new ApiException(NOT_FOUND_PIN);
+        }
+
         String image = "";
-        image = apiResponse.checkNullPinRequestDto(pin, pinRequestDto, image);
+        image = apiResponse.checkNullPinRequestDto(pin.get(), pinRequestDto, image);
 
-        if (checkId(user, pin)) {
-            pin.update(pinRequestDto, image);
+        if (checkId(user, pin.get())) {
+            pin.get().update(pinRequestDto, image);
 
-            return ResponseEntity.ok().body(PinResponseDto.of(pin));
+            return ResponseEntity.ok().body(PinResponseDto.of(pin.get()));
 
             } else {
-            throw new IllegalArgumentException("오류입니다.");
+            throw new ApiException(NOT_MATCH_AUTHORIZATION);
         }
     }
 
     //  Pin 상세 삭제
     public MessageDto delete(User user, Long id) {
         Pin pin = pinRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("게시물을 찾을 수 없습니다.")
+                () -> new ApiException(NOT_FOUND_PIN)
         );
         if (checkId(user, pin)) {
             pinRepository.deleteById(id);
@@ -97,7 +99,7 @@ public class PinService {
                     .httpStatus(HttpStatus.OK)
                     .build();
         } else {
-            throw new IllegalArgumentException("삭제를 실패했습니다.");
+            throw new ApiException(NOT_MATCH_AUTHORIZATION);
         }
     }
 
