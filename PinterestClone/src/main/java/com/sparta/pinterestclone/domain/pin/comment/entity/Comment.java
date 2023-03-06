@@ -1,5 +1,7 @@
-package com.sparta.pinterestclone.domain.pin.entity;
+package com.sparta.pinterestclone.domain.pin.comment.entity;
 
+import com.sparta.pinterestclone.domain.pin.entity.Pin;
+import com.sparta.pinterestclone.domain.pin.entity.Timestamp;
 import com.sparta.pinterestclone.domain.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Comment extends Timestamp{
+public class Comment extends Timestamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,9 +1,9 @@
-package com.sparta.pinterestclone.domain.pin.controller;
+package com.sparta.pinterestclone.domain.pin.comment.controller;
 
-import com.sparta.pinterestclone.domain.pin.RequestDto.CommentRequestDto;
-import com.sparta.pinterestclone.domain.pin.service.CommentService;
+import com.sparta.pinterestclone.domain.pin.comment.dto.CommentRequestDto;
+import com.sparta.pinterestclone.domain.pin.comment.service.CommentService;
 import com.sparta.pinterestclone.dto.MessageDto;
-import com.sparta.pinterestclone.respoinse.ApiDocumentResponse;
+import com.sparta.pinterestclone.utils.ApiDocumentResponse;
 import com.sparta.pinterestclone.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

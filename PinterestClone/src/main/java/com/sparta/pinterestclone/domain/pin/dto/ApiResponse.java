@@ -1,6 +1,5 @@
-package com.sparta.pinterestclone.domain.pin.ResponseDto;
+package com.sparta.pinterestclone.domain.pin.dto;
 
-import com.sparta.pinterestclone.domain.pin.RequestDto.PinRequestDto;
 import com.sparta.pinterestclone.domain.pin.entity.Pin;
 import com.sparta.pinterestclone.domain.pin.service.S3Uploader;
 import lombok.Getter;

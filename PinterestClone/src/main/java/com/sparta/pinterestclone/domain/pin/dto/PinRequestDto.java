@@ -1,4 +1,4 @@
-package com.sparta.pinterestclone.domain.pin.RequestDto;
+package com.sparta.pinterestclone.domain.pin.dto;
 
 import lombok.Getter;
 import lombok.Setter;

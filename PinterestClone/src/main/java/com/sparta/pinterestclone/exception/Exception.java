@@ -1,4 +1,4 @@
-package com.sparta.pinterestclone.domain.pin.exception;
+package com.sparta.pinterestclone.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

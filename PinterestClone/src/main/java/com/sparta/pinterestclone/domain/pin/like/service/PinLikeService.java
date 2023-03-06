@@ -1,10 +1,9 @@
-package com.sparta.pinterestclone.domain.pin.service;
+package com.sparta.pinterestclone.domain.pin.like.service;
 
-import com.sparta.pinterestclone.domain.pin.ResponseDto.MessageResponseDto;
-import com.sparta.pinterestclone.domain.pin.ResponseDto.PinLikeResponseDto;
+import com.sparta.pinterestclone.domain.pin.like.dto.PinLikeResponseDto;
 import com.sparta.pinterestclone.domain.pin.entity.Pin;
-import com.sparta.pinterestclone.domain.pin.entity.PinLike;
-import com.sparta.pinterestclone.domain.pin.repository.PinLikeRepository;
+import com.sparta.pinterestclone.domain.pin.like.entity.PinLike;
+import com.sparta.pinterestclone.domain.pin.like.repository.PinLikeRepository;
 import com.sparta.pinterestclone.domain.pin.repository.PinRepository;
 import com.sparta.pinterestclone.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;

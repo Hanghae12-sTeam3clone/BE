@@ -1,5 +1,6 @@
-package com.sparta.pinterestclone.domain.pin.entity;
+package com.sparta.pinterestclone.domain.pin.like.entity;
 
+import com.sparta.pinterestclone.domain.pin.entity.Pin;
 import com.sparta.pinterestclone.domain.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,10 +1,8 @@
-package com.sparta.pinterestclone.domain.pin.ResponseDto;
+package com.sparta.pinterestclone.domain.pin.like.dto;
 
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-
-import java.net.http.HttpClient;
 
 @Getter
 public class PinLikeResponseDto {

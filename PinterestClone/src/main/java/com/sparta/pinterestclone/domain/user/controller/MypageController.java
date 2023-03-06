@@ -1,6 +1,6 @@
 package com.sparta.pinterestclone.domain.user.controller;
 
-import com.sparta.pinterestclone.domain.pin.ResponseDto.PinResponseDto;
+import com.sparta.pinterestclone.domain.pin.dto.PinResponseDto;
 import com.sparta.pinterestclone.domain.pin.service.PinService;
 import com.sparta.pinterestclone.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;

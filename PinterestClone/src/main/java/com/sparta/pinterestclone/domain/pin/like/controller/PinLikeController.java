@@ -1,8 +1,7 @@
-package com.sparta.pinterestclone.domain.pin.controller;
+package com.sparta.pinterestclone.domain.pin.like.controller;
 
-import com.sparta.pinterestclone.domain.pin.ResponseDto.MessageResponseDto;
-import com.sparta.pinterestclone.domain.pin.ResponseDto.PinLikeResponseDto;
-import com.sparta.pinterestclone.domain.pin.service.PinLikeService;
+import com.sparta.pinterestclone.domain.pin.like.dto.PinLikeResponseDto;
+import com.sparta.pinterestclone.domain.pin.like.service.PinLikeService;
 import com.sparta.pinterestclone.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

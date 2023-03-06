@@ -1,9 +1,9 @@
-package com.sparta.pinterestclone.domain.pin.service;
+package com.sparta.pinterestclone.domain.pin.comment.service;
 
-import com.sparta.pinterestclone.domain.pin.RequestDto.CommentRequestDto;
-import com.sparta.pinterestclone.domain.pin.entity.Comment;
+import com.sparta.pinterestclone.domain.pin.comment.dto.CommentRequestDto;
+import com.sparta.pinterestclone.domain.pin.comment.entity.Comment;
 import com.sparta.pinterestclone.domain.pin.entity.Pin;
-import com.sparta.pinterestclone.domain.pin.repository.CommentRepository;
+import com.sparta.pinterestclone.domain.pin.comment.repository.CommentRepository;
 import com.sparta.pinterestclone.domain.pin.repository.PinRepository;
 import com.sparta.pinterestclone.domain.user.entity.User;
 import com.sparta.pinterestclone.domain.user.entity.UserRoleEnum;

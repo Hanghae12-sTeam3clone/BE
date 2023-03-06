@@ -1,6 +1,6 @@
-package com.sparta.pinterestclone.domain.pin.repository;
+package com.sparta.pinterestclone.domain.pin.comment.repository;
 
-import com.sparta.pinterestclone.domain.pin.entity.Comment;
+import com.sparta.pinterestclone.domain.pin.comment.entity.Comment;
 import com.sparta.pinterestclone.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
