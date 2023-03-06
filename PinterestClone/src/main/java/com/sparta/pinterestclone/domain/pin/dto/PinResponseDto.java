@@ -1,6 +1,6 @@
 package com.sparta.pinterestclone.domain.pin.dto;
 
-import com.sparta.pinterestclone.domain.pin.comment.dto.CommentResponseDto;
+import com.sparta.pinterestclone.domain.comment.dto.CommentResponseDto;
 import com.sparta.pinterestclone.domain.pin.entity.Pin;
 import lombok.Builder;
 import lombok.Getter;

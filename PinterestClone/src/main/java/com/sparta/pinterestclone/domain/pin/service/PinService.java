@@ -3,11 +3,11 @@ package com.sparta.pinterestclone.domain.pin.service;
 
 import com.sparta.pinterestclone.domain.pin.dto.PinRequestDto;
 import com.sparta.pinterestclone.domain.pin.dto.ApiResponse;
-import com.sparta.pinterestclone.domain.pin.comment.dto.CommentResponseDto;
+import com.sparta.pinterestclone.domain.comment.dto.CommentResponseDto;
 import com.sparta.pinterestclone.domain.pin.dto.PinResponseDto;
-import com.sparta.pinterestclone.domain.pin.comment.entity.Comment;
+import com.sparta.pinterestclone.domain.comment.entity.Comment;
 import com.sparta.pinterestclone.domain.pin.entity.Pin;
-import com.sparta.pinterestclone.dto.MessageDto;
+import com.sparta.pinterestclone.utils.dto.MessageDto;
 import com.sparta.pinterestclone.domain.pin.repository.PinRepository;
 import com.sparta.pinterestclone.domain.user.entity.User;
 import com.sparta.pinterestclone.domain.user.entity.UserRoleEnum;

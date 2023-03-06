@@ -1,13 +1,13 @@
 package com.sparta.pinterestclone.domain.user.controller;
 
-import com.sparta.pinterestclone.domain.ref.ApiResponseDto;
-import com.sparta.pinterestclone.domain.ref.SuccessResponse;
+import com.sparta.pinterestclone.auth.refreshtoken.dto.ApiResponseDto;
+import com.sparta.pinterestclone.auth.refreshtoken.response.SuccessResponse;
 import com.sparta.pinterestclone.domain.user.dto.LoginRequestDto;
 import com.sparta.pinterestclone.domain.user.dto.SignupRequestDto;
 import com.sparta.pinterestclone.domain.user.service.UserService;
-import com.sparta.pinterestclone.dto.MessageDto;
+import com.sparta.pinterestclone.utils.dto.MessageDto;
 
-import com.sparta.pinterestclone.utils.ApiDocumentResponse;
+import com.sparta.pinterestclone.config.ApiDocumentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

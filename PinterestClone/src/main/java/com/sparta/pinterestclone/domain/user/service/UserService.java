@@ -1,14 +1,19 @@
 package com.sparta.pinterestclone.domain.user.service;
 
-import com.sparta.pinterestclone.domain.ref.*;
+import com.sparta.pinterestclone.auth.refreshtoken.dto.ApiResponseDto;
+import com.sparta.pinterestclone.auth.refreshtoken.dto.TokenDto;
+import com.sparta.pinterestclone.auth.refreshtoken.entity.RefreshToken;
+import com.sparta.pinterestclone.auth.refreshtoken.repository.RefreshTokenRepository;
+import com.sparta.pinterestclone.auth.refreshtoken.response.ResponseUtils;
+import com.sparta.pinterestclone.auth.refreshtoken.response.SuccessResponse;
 import com.sparta.pinterestclone.domain.user.dto.LoginRequestDto;
 import com.sparta.pinterestclone.domain.user.dto.SignupRequestDto;
 import com.sparta.pinterestclone.domain.user.entity.User;
 import com.sparta.pinterestclone.domain.user.entity.UserRoleEnum;
 import com.sparta.pinterestclone.domain.user.repository.UserRepository;
-import com.sparta.pinterestclone.dto.MessageDto;
+import com.sparta.pinterestclone.utils.dto.MessageDto;
 import com.sparta.pinterestclone.exception.ApiException;
-import com.sparta.pinterestclone.jwt.JwtUtil;
+import com.sparta.pinterestclone.auth.jwt.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
