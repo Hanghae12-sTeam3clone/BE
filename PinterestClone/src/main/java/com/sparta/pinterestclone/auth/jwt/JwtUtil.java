@@ -4,6 +4,8 @@ import com.sparta.pinterestclone.auth.refreshtoken.entity.RefreshToken;
 import com.sparta.pinterestclone.auth.refreshtoken.repository.RefreshTokenRepository;
 import com.sparta.pinterestclone.auth.refreshtoken.dto.TokenDto;
 import com.sparta.pinterestclone.auth.security.UserDetailsServiceImpl;
+import com.sparta.pinterestclone.exception.ApiException;
+import com.sparta.pinterestclone.exception.Exception;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
@@ -53,6 +55,10 @@ public class JwtUtil {
 
     public String resolveToken(HttpServletRequest request,String type) {
         String bearerToken = type.equals("Access")?request.getHeader(AUTHORIZATION_HEADER) : request.getHeader(REFRESH_TOKEN);
+        if(bearerToken == null) {
+            return null;
+        }
+
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
