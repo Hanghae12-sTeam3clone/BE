@@ -5,6 +5,7 @@ import com.sparta.pinterestclone.domain.user.dto.SignupRequestDto;
 import com.sparta.pinterestclone.domain.user.service.UserService;
 import com.sparta.pinterestclone.dto.MessageDto;
 
+import com.sparta.pinterestclone.respoinse.ApiDocumentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
+@ApiDocumentResponse
 public class UserController {
 
     private final UserService userService;

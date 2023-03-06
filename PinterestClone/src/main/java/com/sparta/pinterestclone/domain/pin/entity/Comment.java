@@ -19,11 +19,11 @@ public class Comment extends Timestamp{
     @Column(nullable = false)
     private String comment;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PIN_ID", nullable = false)
     private Pin pin;
 
