@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,7 +35,8 @@ public class Pin extends Timestamp{
     @OneToMany(mappedBy = "pin")
     private List<Comment> comments;
 
-
+    @OneToMany(mappedBy = "pin")
+    private List<PinLike> pinLikes = new ArrayList<>();
 
     @Builder
     public Pin(PinRequestDto requestDto,User user, String image) {        //  사용자 클래스 변경 확인 요망
