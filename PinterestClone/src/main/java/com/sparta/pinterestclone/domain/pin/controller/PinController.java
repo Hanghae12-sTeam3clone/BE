@@ -8,6 +8,11 @@ import com.sparta.pinterestclone.utils.ApiDocumentResponse;
 import com.sparta.pinterestclone.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.querydsl.QPageRequest;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,11 +30,14 @@ public class PinController {
 
     @Operation(summary = "Pin 제목 검색 요청", description = "제목을 검색합니다.", tags = {"Pin"})
     @GetMapping("/pins/search")
-    public List<PinResponseDto> search(@RequestParam(value = "keyword") String keyword, Model model) {
-        List<PinResponseDto> pinResponseDtoList = pinService.searchPosts(keyword);
+    public List<PinResponseDto> search(@RequestParam(value = "keyword") String keyword
+            , @RequestParam("page") int page
+            , @RequestParam("size") int size
+            , Model model) {
+        List<PinResponseDto> pinResponseDtoList = pinService.searchPosts(keyword ,page ,size);
         model.addAttribute("pinList", pinResponseDtoList);
 
-        return pinService.searchPosts(keyword);
+        return pinService.searchPosts(keyword, page , size);
     }
 
     @Operation(summary = "Pin 생성 요청", description = "Pin 추가됩니다.", tags = {"Pin"})
@@ -40,8 +48,11 @@ public class PinController {
 
     @Operation(summary = "Pin 전체 조회 요청", description = "Pin을 모두 조회합니다.", tags = {"Pin"})
     @GetMapping("/pins")
-    public List<PinResponseDto> getBoards() {
-        return pinService.getPins();
+    public List<PinResponseDto> getPostList(
+            @RequestParam("page") int page
+            , @RequestParam("size") int size) {
+        List<PinResponseDto> resultList = pinService.getPintList(page, size);
+        return resultList;
     }
 
     @Operation(summary = "Pin 상세 페이지 요청", description = "Pin Id를 통해 상세 페이지를 조회 합니다.", tags = {"Pin"})
@@ -50,11 +61,12 @@ public class PinController {
         return pinService.getIdPin(pinId);
     }
 
+
     @Operation(summary = "Pin 수정 요청", description = "Pin Id를 통해 Pin을 수정 합니다.", tags = {"Pin"})
     @PatchMapping("/pins/{pinId}")
     public ResponseEntity<PinResponseDto> updatepins(@PathVariable Long pinId,
-                                                    @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                    @ModelAttribute PinRequestDto pinRequestDto) throws IOException {
+                                                     @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                     @ModelAttribute PinRequestDto pinRequestDto) throws IOException {
 
         return pinService.update(userDetails.getUser(), pinId, pinRequestDto);
     }
@@ -62,7 +74,7 @@ public class PinController {
     @Operation(summary = "Pin 삭제 요청", description = "Pin Id를 통해 Pin을 삭제합니다.", tags = {"Pin"})
     @DeleteMapping("/pins/{pinId}")
     public MessageDto delete(@PathVariable Long pinId,
-                                     @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         pinService.delete(userDetails.getUser(), pinId);
         return new MessageDto("핀 삭제 성공", HttpStatus.OK);
     }
