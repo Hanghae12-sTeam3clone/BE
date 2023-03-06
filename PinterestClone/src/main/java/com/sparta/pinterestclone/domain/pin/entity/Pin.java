@@ -35,7 +35,7 @@ public class Pin extends Timestamp{
     private User user;
     
     @OneToMany(mappedBy = "pin")
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "pin")
     private List<PinLike> pinLikes = new ArrayList<>();
