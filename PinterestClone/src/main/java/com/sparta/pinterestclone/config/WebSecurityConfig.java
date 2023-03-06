@@ -1,5 +1,6 @@
 package com.sparta.pinterestclone.config;
 
+import com.sparta.pinterestclone.exception.CustomAuthenticationEntryPoint;
 import com.sparta.pinterestclone.jwt.JwtAuthFilter;
 import com.sparta.pinterestclone.jwt.JwtUtil;
 
@@ -29,6 +30,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class WebSecurityConfig {
 
     private final JwtUtil jwtUtil;
+//    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -75,6 +77,10 @@ public class WebSecurityConfig {
 
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+//        httpSecurity.exceptionHandling()
+//                .authenticationEntryPoint(authenticationEntryPoint)
+//                .and();
+
         httpSecurity.authorizeRequests()
                 .antMatchers( "/v3/api-docs",
                         "/v3/api-docs/**",
@@ -87,6 +93,7 @@ public class WebSecurityConfig {
 //                .antMatchers(HttpMethod.GET,"/api/posts/**").permitAll()
 //                .antMatchers(HttpMethod.GET,"/api/comments/**").permitAll()
                 .anyRequest().authenticated()
+                .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         httpSecurity.formLogin().permitAll();
