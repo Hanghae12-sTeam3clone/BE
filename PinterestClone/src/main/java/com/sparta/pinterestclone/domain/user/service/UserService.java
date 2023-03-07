@@ -12,6 +12,7 @@ import com.sparta.pinterestclone.domain.user.dto.SignupRequestDto;
 import com.sparta.pinterestclone.domain.user.entity.User;
 import com.sparta.pinterestclone.domain.user.entity.UserRoleEnum;
 import com.sparta.pinterestclone.domain.user.repository.UserRepository;
+import com.sparta.pinterestclone.exception.Exception;
 import com.sparta.pinterestclone.utils.dto.MessageDto;
 import com.sparta.pinterestclone.exception.ApiException;
 import com.sparta.pinterestclone.auth.jwt.JwtUtil;
@@ -23,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
@@ -99,4 +101,13 @@ public class UserService {
                 .body(new MessageDto("회원가입 완료", HttpStatus.OK));
     }
 
+//         토큰 갱신 확인
+    public ApiResponseDto<SuccessResponse> issueToken(HttpServletRequest request, HttpServletResponse response) {
+        String refreshToken = jwtUtil.resolveToken(request,"Refresh");
+        if(!jwtUtil.refreshTokenValidation(refreshToken)){
+            throw new ApiException(JWT_EXPIRED_TOKEN);
+        }
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(jwtUtil.getEmail(refreshToken),"Access"));
+        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "갱신 성공"));
+    }
 }
