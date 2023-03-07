@@ -78,8 +78,8 @@ public class PinService {
 
     // Pin 상세 수정
     @Transactional
-    public ResponseEntity<PinResponseDto> update(User user, Long id, PinRequestDto pinRequestDto) throws IOException {
-        Optional<Pin> pin = pinRepository.findById(id);
+    public ResponseEntity<PinResponseDto> update(User user, Long pinId, PinRequestDto pinRequestDto) throws IOException {
+        Optional<Pin> pin = pinRepository.findById(pinId);
 
         if(pin.isEmpty()) {
             throw new ApiException(NOT_FOUND_PIN);
@@ -99,12 +99,12 @@ public class PinService {
     }
 
     //  Pin 상세 삭제
-    public MessageDto delete(User user, Long id) {
-        Pin pin = pinRepository.findById(id).orElseThrow(
+    public MessageDto delete(User user, Long pinId) {
+        Pin pin = pinRepository.findById(pinId).orElseThrow(
                 () -> new ApiException(NOT_FOUND_PIN)
         );
         if (checkId(user, pin)) {
-            pinRepository.deleteById(id);
+            pinRepository.deleteById(pinId);
             return MessageDto.builder()
                     .msg("성공")
                     .httpStatus(HttpStatus.OK)
