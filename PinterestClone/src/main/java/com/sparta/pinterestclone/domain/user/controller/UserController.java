@@ -11,11 +11,9 @@ import com.sparta.pinterestclone.utils.dto.MessageDto;
 import com.sparta.pinterestclone.config.ApiDocumentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -37,5 +35,11 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         return userService.login(loginRequestDto,response);
+    }
+
+//    회원 토큰 갱신
+    @GetMapping("/users/token")
+    public ApiResponseDto<SuccessResponse> issuedToken(HttpServletRequest request, HttpServletResponse response){
+        return userService.issueToken(request,response);
     }
 }

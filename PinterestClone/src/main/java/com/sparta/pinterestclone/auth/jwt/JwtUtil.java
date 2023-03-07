@@ -97,8 +97,11 @@ public class JwtUtil {
         return false;
     }
 
+//      refreshToken 검증 비교
     public Boolean refreshTokenValidation(String token){
+//        1차 토큰 검즘
         if(!validateToken(token)) return false;
+//        DB에 저장한 토큰 비교
         Optional<RefreshToken> refreshToken = refreshTokenRepository.findAllByEmail(token);
         return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken().substring(7));
     }
