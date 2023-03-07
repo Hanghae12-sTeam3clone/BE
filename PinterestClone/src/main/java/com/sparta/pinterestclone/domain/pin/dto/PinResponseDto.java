@@ -1,6 +1,7 @@
 package com.sparta.pinterestclone.domain.pin.dto;
 
 import com.sparta.pinterestclone.domain.comment.dto.CommentResponseDto;
+import com.sparta.pinterestclone.domain.comment.entity.Comment;
 import com.sparta.pinterestclone.domain.pin.entity.Pin;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class PinResponseDto {
 
     @Builder
     public PinResponseDto(Pin pin, List<CommentResponseDto> comments) {
-        id = pin.getId();;
+        id = pin.getId();
         title = pin.getTitle();
         content = pin.getContent();
         nickname = pin.getUser().getNickname();

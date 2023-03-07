@@ -3,6 +3,7 @@ package com.sparta.pinterestclone.domain.user.controller;
 import com.sparta.pinterestclone.auth.refreshtoken.dto.ApiResponseDto;
 import com.sparta.pinterestclone.auth.refreshtoken.response.SuccessResponse;
 import com.sparta.pinterestclone.domain.user.dto.LoginRequestDto;
+import com.sparta.pinterestclone.domain.user.dto.LoginResponseDto;
 import com.sparta.pinterestclone.domain.user.dto.SignupRequestDto;
 import com.sparta.pinterestclone.domain.user.service.UserService;
 import com.sparta.pinterestclone.utils.dto.MessageDto;
@@ -34,7 +35,7 @@ public class UserController {
 
     // 로그인
     @PostMapping("/login")
-    public ApiResponseDto<SuccessResponse> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         return userService.login(loginRequestDto,response);
     }
 }

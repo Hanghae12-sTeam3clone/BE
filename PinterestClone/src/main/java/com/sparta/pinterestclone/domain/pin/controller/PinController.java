@@ -64,7 +64,7 @@ public class PinController {
 
     @Operation(summary = "Pin 수정 요청", description = "Pin Id를 통해 Pin을 수정 합니다.", tags = {"Pin"})
     @PatchMapping("/pins/{pinId}")
-    public ResponseEntity<PinResponseDto> updatepins(@PathVariable Long pinId,
+    public ResponseEntity<MessageDto> updatepins(@PathVariable Long pinId,
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                      @ModelAttribute PinRequestDto pinRequestDto) throws IOException {
 

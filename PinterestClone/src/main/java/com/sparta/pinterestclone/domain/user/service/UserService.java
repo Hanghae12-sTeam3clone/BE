@@ -7,6 +7,7 @@ import com.sparta.pinterestclone.auth.refreshtoken.repository.RefreshTokenReposi
 import com.sparta.pinterestclone.auth.refreshtoken.response.ResponseUtils;
 import com.sparta.pinterestclone.auth.refreshtoken.response.SuccessResponse;
 import com.sparta.pinterestclone.domain.user.dto.LoginRequestDto;
+import com.sparta.pinterestclone.domain.user.dto.LoginResponseDto;
 import com.sparta.pinterestclone.domain.user.dto.SignupRequestDto;
 import com.sparta.pinterestclone.domain.user.entity.User;
 import com.sparta.pinterestclone.domain.user.entity.UserRoleEnum;
@@ -37,7 +38,7 @@ public class UserService {
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Transactional(readOnly = true)
-    public ApiResponseDto<SuccessResponse> login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
+    public ResponseEntity<LoginResponseDto> login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
 
         String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
@@ -62,7 +63,9 @@ public class UserService {
             refreshTokenRepository.save(newToken);
         }
         jwtUtil.setHeader(response, tokenDto);
-        return ResponseUtils.ok(SuccessResponse.of(HttpStatus.OK, "성공"));
+
+        return ResponseEntity.ok()
+                .body(new LoginResponseDto("로그인 성공", HttpStatus.OK.value(), user.get().getNickname()));
     }
 
     public ResponseEntity<MessageDto> signup(SignupRequestDto signupRequestDto) {

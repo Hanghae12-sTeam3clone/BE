@@ -78,7 +78,7 @@ public class PinService {
 
     // Pin 상세 수정
     @Transactional
-    public ResponseEntity<PinResponseDto> update(User user, Long pinId, PinRequestDto pinRequestDto) throws IOException {
+    public ResponseEntity<MessageDto> update(User user, Long pinId, PinRequestDto pinRequestDto) throws IOException {
         Optional<Pin> pin = pinRepository.findById(pinId);
 
         if(pin.isEmpty()) {
@@ -91,7 +91,7 @@ public class PinService {
         if (checkId(user, pin.get())) {
             pin.get().update(pinRequestDto, image);
 
-            return ResponseEntity.ok().body(PinResponseDto.of(pin.get()));
+            return ResponseEntity.ok().body(new MessageDto("핀 수정 성공", HttpStatus.OK));
 
             } else {
             throw new ApiException(NOT_MATCH_AUTHORIZATION);
