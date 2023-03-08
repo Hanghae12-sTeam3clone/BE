@@ -47,7 +47,7 @@ public class S3Uploader {
     }
 
     protected String detailUpload(File uploadFile) throws IOException {
-        String fileName = "static" + "/detail" + uploadFile.getName();
+        String fileName = "detail" + "/" + uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
         removeNewFile(uploadFile);
         return uploadImageUrl;
