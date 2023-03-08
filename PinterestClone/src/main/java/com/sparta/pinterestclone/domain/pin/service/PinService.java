@@ -17,6 +17,9 @@ import com.sparta.pinterestclone.domain.user.entity.UserRoleEnum;
 import com.sparta.pinterestclone.exception.ApiException;
 import com.sparta.pinterestclone.utils.dto.MessageDto;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.*;
+
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -66,15 +69,15 @@ public class PinService {
         Pin pin = pinRepository.save(Pin.of(pinRequestDto, imageMain, imageDetail, user));
 
         return new MessageDto("핀 저장 성공", HttpStatus.OK);
+        
     }
 
 //     Pin 전체 조회하기
     @Transactional
-    public List<PinResponseDto> getPintList(int page, int size) {
+    public Slice<PinResponseDto> getPintList(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Pin> pins = pinRepository.findAllByOrderByCreatedAtDesc(pageable);
-        List<PinResponseDto> pinResponseDtos = getDtoList(pins);
-        return pinResponseDtos;
+        Slice<PinResponseDto> pins = pinRepository.findAllByOrderByCreatedAtDesc(pageable);
+        return pins;
     }
 
     // Pin 상세 조회하기
@@ -155,7 +158,7 @@ public class PinService {
 
     }
 
-    // 전체 리스트 가져오기 메서드
+//     전체 리스트 가져오기 메서드
     private static List<PinResponseDto> getDtoList(Page<Pin> pins) {
         List<PinResponseDto> pinResponseDtos = new ArrayList<>();
         for (Pin p : pins) {
