@@ -38,7 +38,7 @@ public class UserController {
     }
 
 //    회원 토큰 갱신
-    @GetMapping("/users/token")
+    @GetMapping("/token")
     public ApiResponseDto<SuccessResponse> issuedToken(HttpServletRequest request, HttpServletResponse response){
         return userService.issueToken(request,response);
     }
