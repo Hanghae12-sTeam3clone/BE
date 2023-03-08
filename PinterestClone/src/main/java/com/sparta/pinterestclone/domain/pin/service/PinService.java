@@ -55,6 +55,7 @@ public class PinService {
         Pin pin = pinRepository.save(Pin.of(pinRequestDto, image, user));
 
         return new MessageDto("핀 저장 성공", HttpStatus.OK);
+        
     }
 
 //     Pin 전체 조회하기
