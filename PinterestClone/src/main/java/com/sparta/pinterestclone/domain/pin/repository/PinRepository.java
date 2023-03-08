@@ -14,6 +14,8 @@ public interface PinRepository extends JpaRepository<Pin, Long> {
 
     Page<Pin> findAll(Pageable pageable);
 
+    Optional<Pin> findById(Long pinId);
+
     Page<Pin> findByTitleContaining(Pageable pageable , String keyword);
 
     List<Pin> findByUserId(Long id);

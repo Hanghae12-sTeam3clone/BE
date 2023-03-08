@@ -35,10 +35,10 @@ public class PinResponseDto {
         createdAt = pin.getCreatedAt();
         modifiedAt = pin.getModifiedAt();
         this.comments = comments;
-        this.isLike = isLike;
+        this.isLike =isLike;
     }
 
-    public static PinResponseDto of(Pin pin, List<CommentResponseDto> commentResponseDtos, boolean isLike){
+    public static PinResponseDto of(Pin pin , List<CommentResponseDto> commentResponseDtos, boolean isLike){
         return PinResponseDto.builder()
                 .pin(pin)
                 .comments(commentResponseDtos)
@@ -47,13 +47,13 @@ public class PinResponseDto {
     }
 
     public static PinResponseDto of(Pin pin, List<CommentResponseDto> commentResponseDtos){
+
         return PinResponseDto.builder()
                 .pin(pin)
                 .comments(commentResponseDtos)
                 .build();
     }
-
-    public static PinResponseDto from(Pin pin){
+    public static PinResponseDto of(Pin pin){
         return PinResponseDto.builder()
                 .pin(pin)
                 .build();

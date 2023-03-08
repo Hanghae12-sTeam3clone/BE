@@ -8,11 +8,7 @@ import com.sparta.pinterestclone.config.ApiDocumentResponse;
 import com.sparta.pinterestclone.auth.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.querydsl.QPageRequest;
-import org.springframework.data.web.PageableDefault;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,6 +21,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @ApiDocumentResponse
+@Slf4j
 public class PinController {
     private final PinService pinService;
 
@@ -48,9 +45,8 @@ public class PinController {
 
     @Operation(summary = "Pin 전체 조회 요청", description = "Pin을 모두 조회합니다.", tags = {"Pin"})
     @GetMapping("/pins")
-    public List<PinResponseDto> getPostList(
-            @RequestParam("page") int page
-            , @RequestParam("size") int size) {
+    public List<PinResponseDto> getPostList(@RequestParam(value = "page") int page,
+        @RequestParam(value = "size") int size){
         List<PinResponseDto> resultList = pinService.getPintList(page, size);
         return resultList;
     }
@@ -59,6 +55,7 @@ public class PinController {
     @GetMapping("pins/{pinId}")
     public PinResponseDto getIdPin(@PathVariable Long pinId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return pinService.getIdPin(pinId, userDetails.getUser());
+
     }
 
 

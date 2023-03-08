@@ -1,6 +1,8 @@
 package com.sparta.pinterestclone.domain.pin.service;
 
 
+import com.sparta.pinterestclone.domain.like.entity.PinLike;
+import com.sparta.pinterestclone.domain.like.repository.PinLikeRepository;
 import com.sparta.pinterestclone.domain.pin.dto.PinRequestDto;
 import com.sparta.pinterestclone.domain.comment.dto.CommentResponseDto;
 import com.sparta.pinterestclone.domain.comment.entity.Comment;
@@ -49,6 +51,9 @@ public class PinService {
     private final PinRepository pinRepository;
     private final S3Uploader s3Uploader;
     private final ApiResponse apiResponse;
+    private final UserService userService;
+    private final UserRepository userRepository;
+
     private final PinLikeRepository pinLikeRepository;
 
     // Pin 저장

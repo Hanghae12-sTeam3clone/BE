@@ -39,7 +39,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
-    @Transactional(readOnly = true)
+    @Transactional
     public ResponseEntity<LoginResponseDto> login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
 
         String email = loginRequestDto.getEmail();
@@ -70,6 +70,7 @@ public class UserService {
                 .body(new LoginResponseDto("로그인 성공", HttpStatus.OK.value(), user.get().getNickname()));
     }
 
+    @Transactional
     public ResponseEntity<MessageDto> signup(SignupRequestDto signupRequestDto) {
 
         String email = signupRequestDto.getEmail();
