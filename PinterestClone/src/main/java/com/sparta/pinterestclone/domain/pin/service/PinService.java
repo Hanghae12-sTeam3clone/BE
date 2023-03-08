@@ -54,17 +54,16 @@ public class PinService {
     private final PinRepository pinRepository;
     private final S3Uploader s3Uploader;
     private final ApiResponse apiResponse;
-    private final UserService userService;
-    private final UserRepository userRepository;
+
 
     private final PinLikeRepository pinLikeRepository;
 
     // Pin 저장
     @Transactional
     public MessageDto create(User user, PinRequestDto pinRequestDto) throws Exception {
-
+        // 이미지를 나눠서 업로드 해야한다.
         String imageMain = s3Uploader.mainUpload(resizeImage(pinRequestDto.getImage())); // 리사이즈한 이미지를 S3에 업로드 하기
-        String imageDetail = s3Uploader.detailUpload(pinRequestDto.getImage());
+        String imageDetail = s3Uploader.detailUpload(pinRequestDto.getImage()); // 일반 이미지 파일
         //  작성 글 저장
         Pin pin = pinRepository.save(Pin.of(pinRequestDto, imageMain, imageDetail, user));
 
@@ -152,7 +151,7 @@ public class PinService {
         List<PinResponseDto> pinList = new ArrayList<>();
 
         for (Pin p : pins) {
-            pinList.add(PinResponseDto.from(p));
+            pinList.add(PinResponseDto.of(p));
         }
         return pinList;
 
@@ -179,18 +178,18 @@ public class PinService {
 
     // multipart로 받은 이미지 파일 리사이징 해서 파일 만들기
     public File resizeImage(MultipartFile file) throws IOException {
-
+        // 리사이징은 MltipartFile로 변환할 수 없다.
         //1. MltipartFile 에서 BufferedImage로 변환
+        // BufferedImage에 있는 메서드로 우리가 받은 MltipartFile을 BufferedImage로 변환 후 이미지의 가로세로 추출.
         BufferedImage originalImage = ImageIO.read(file.getInputStream());
-
         int originWidth = originalImage.getWidth();
         int originHeight = originalImage.getHeight();
 
-        // 받은 file 비율 최적화 시키기
+        // 받은 file 비율 최적화 시키기 ( 파일 사이즈를 줄여서 데이터 크기 감량 )
         int newWidth = 220;
         int newHeight = 0;
         if (originWidth > newWidth) {
-            newHeight = (originHeight * newWidth) / originWidth;
+            newHeight = (originHeight * newWidth) / originWidth; // 이미지 비율로 변환
         }
 
         //2. Graphics2D 사용으로 리사이징
@@ -200,7 +199,16 @@ public class PinService {
         graphics2D.dispose();
 
 
-        //3. BufferedImage 로 File객체로 생성
+//       이미지 파일을 가져와 크기를 조정한 후, 새 파일에 조정된 이미지를 작성하는 메소드입니다. 다음과 같은 동작을 수행.
+//
+//        1.원본 파일과 같은 이름으로 새 File 객체를 생성합니다.
+//        2.createNewFile() 메소드를 사용하여 해당 이름으로 새 파일을 생성합니다. 파일이 이미 존재하면 새 파일을 만들지 않습니다.
+//        3.ImageIO.write() 메소드를 사용하여 조정된 이미지를 ByteArrayOutputStream 객체에 쓰기합니다.
+//        4.ByteArrayOutputStream로부터 InputStream을 생성합니다.
+//        5.Files.copy() 메소드를 사용하여 InputStream을 2 단계에서 만든 새 파일에 복사하고, 이미 파일이 존재하는 경우 덮어씁니다.
+//          새로운 File 객체를 반환합니다.
+//        6.코드 실행 중에 예외가 발생하면 RuntimeException이 throw됩니다.
+//          이미지의 크기를 조정하고 조정된 이미지를 새 파일에 저장하는데 사용한다.
         File outputfile = new File(file.getOriginalFilename());
         try {
             if (outputfile.createNewFile()) {

@@ -69,7 +69,8 @@ public class PinResponseDto {
         content = pin.getContent();
         nickname = pin.getUser().getNickname();
         likeCount = pin.getPinLikes().size();
-        image = pin.getImage();
+        imageMain = pin.getImageMain();
+        imageDetail = pin.getImageDetail();
         createdAt = pin.getCreatedAt();
         modifiedAt = pin.getModifiedAt();
         comments = commentResponseDtos;

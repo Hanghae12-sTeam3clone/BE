@@ -2,10 +2,8 @@ package com.sparta.pinterestclone.domain.mysave.controller;
 
 import com.sparta.pinterestclone.auth.refreshtoken.response.SuccessResponse;
 import com.sparta.pinterestclone.auth.security.UserDetailsImpl;
-import com.sparta.pinterestclone.domain.mysave.dto.MySaveResponseDto;
 import com.sparta.pinterestclone.domain.mysave.service.MySaveService;
 import com.sparta.pinterestclone.domain.pin.dto.PinResponseDto;
-import com.sparta.pinterestclone.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

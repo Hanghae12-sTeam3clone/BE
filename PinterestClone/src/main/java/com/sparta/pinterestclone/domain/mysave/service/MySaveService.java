@@ -1,8 +1,6 @@
 package com.sparta.pinterestclone.domain.mysave.service;
 
 import com.sparta.pinterestclone.auth.refreshtoken.response.SuccessResponse;
-import com.sparta.pinterestclone.auth.security.UserDetailsImpl;
-import com.sparta.pinterestclone.domain.mysave.dto.MySaveResponseDto;
 import com.sparta.pinterestclone.domain.mysave.entity.MySave;
 import com.sparta.pinterestclone.domain.mysave.repository.MySaveRepository;
 import com.sparta.pinterestclone.domain.pin.dto.PinResponseDto;
@@ -14,10 +12,8 @@ import com.sparta.pinterestclone.exception.Exception;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
