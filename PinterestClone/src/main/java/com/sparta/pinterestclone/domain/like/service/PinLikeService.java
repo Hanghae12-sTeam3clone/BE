@@ -2,6 +2,7 @@ package com.sparta.pinterestclone.domain.like.service;
 
 import com.sparta.pinterestclone.domain.like.entity.PinLike;
 import com.sparta.pinterestclone.domain.like.dto.PinLikeResponseDto;
+import com.sparta.pinterestclone.domain.pin.dto.PinResponseDto;
 import com.sparta.pinterestclone.domain.pin.entity.Pin;
 import com.sparta.pinterestclone.domain.like.repository.PinLikeRepository;
 import com.sparta.pinterestclone.domain.pin.repository.PinRepository;
@@ -34,9 +35,13 @@ public class PinLikeService {
         // 매개변수 pin과 getUser로 PinLike에 있는지 확인 후 없다면 repository에 저장
         Optional<PinLike> found = pinLikeRepository.findByPinAndUser(pin, userDetails.getUser());
         if (found.isEmpty()) {
-            PinLike pinLike = PinLike.of(userDetails.getUser(),pin);
+            PinLike pinLike = PinLike.of(userDetails.getUser(), pin);
             pinLikeRepository.save(pinLike);
         }
+
+
+
+
         return PinLikeResponseDto.of(true,"좋아요 성공", HttpStatus.OK);
     }
 

@@ -40,7 +40,7 @@ public class PinController {
 
     @Operation(summary = "Pin 생성 요청", description = "Pin 추가됩니다.", tags = {"Pin"})
     @PostMapping("/pins/create")
-    public MessageDto create(@ModelAttribute PinRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    public MessageDto create(@ModelAttribute PinRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws Exception {
         return pinService.create(userDetails.getUser(), requestDto);
     }
 
@@ -55,7 +55,8 @@ public class PinController {
     @Operation(summary = "Pin 상세 페이지 요청", description = "Pin Id를 통해 상세 페이지를 조회 합니다.", tags = {"Pin"})
     @GetMapping("pins/{pinId}")
     public PinResponseDto getIdPin(@PathVariable Long pinId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return pinService.getIdPin(pinId,userDetails.getUser());
+        return pinService.getIdPin(pinId, userDetails.getUser());
+
     }
 
 
@@ -63,7 +64,7 @@ public class PinController {
     @PatchMapping("/pins/{pinId}")
     public ResponseEntity<MessageDto> updatepins(@PathVariable Long pinId,
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                     @ModelAttribute PinRequestDto pinRequestDto) throws IOException {
+                                                     @ModelAttribute PinRequestDto pinRequestDto) throws Exception {
 
         return pinService.update(userDetails.getUser(), pinId, pinRequestDto);
     }

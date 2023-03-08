@@ -1,4 +1,4 @@
-package com.sparta.pinterestclone.domain.like.entity;
+package com.sparta.pinterestclone.domain.mysave.entity;
 
 import com.sparta.pinterestclone.domain.pin.entity.Pin;
 import com.sparta.pinterestclone.domain.user.entity.User;
@@ -9,15 +9,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor
 @Getter
-public class PinLike {
+@NoArgsConstructor
+public class MySave {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column
-    private boolean isLike = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", nullable = false)
@@ -28,14 +26,13 @@ public class PinLike {
     private Pin pin;
 
     @Builder
-    public PinLike(User user, Pin pin) {
+    public MySave(User user, Pin pin) {
         this.user = user;
         this.pin = pin;
-
     }
 
-    public static PinLike of(User user, Pin pin ) {
-        return PinLike.builder()
+    public static MySave of(User user, Pin pin) {
+        return MySave.builder()
                 .user(user)
                 .pin(pin)
                 .build();

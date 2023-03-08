@@ -25,17 +25,29 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String upload(MultipartFile multipartFile) throws IOException {
-        //MultipartFile을 전달 받고
+    public String mainPageUpload(MultipartFile multipartFile) throws Exception {
         //S3에 Multipartfile 타입은 전송이 안됩니다.
-        File uploadFile = convert(multipartFile)
-                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
-
-        return upload(uploadFile);
+       File uploadFile = convert(multipartFile)
+               .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
+       return mainUpload(uploadFile);
     }
 
-    private String upload(File uploadFile) {
+    public String detailUpload(MultipartFile multipartFile) throws Exception {
+        //S3에 Multipartfile 타입은 전송이 안됩니다.
+       File uploadFile = convert(multipartFile)
+               .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
+       return detailUpload(uploadFile);
+    }
+
+    protected String mainUpload(File uploadFile) throws IOException {
         String fileName = "static" + "/" + uploadFile.getName();
+        String uploadImageUrl = putS3(uploadFile, fileName);
+        removeNewFile(uploadFile);
+        return uploadImageUrl;
+    }
+
+    protected String detailUpload(File uploadFile) throws IOException {
+        String fileName = "detail" + "/" + uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
         removeNewFile(uploadFile);
         return uploadImageUrl;
@@ -50,7 +62,7 @@ public class S3Uploader {
 
     //    로컬에 생성된 File 삭제
 //    Multipartfile -> File로 전환되면서 로컬에 파일 생성된것을 삭제합니다.
-    private void removeNewFile(File targetFile) {
+    private void removeNewFile(File targetFile) throws IOException {
         if (targetFile.delete()) {
             log.info("파일이 삭제되었습니다.");
         } else {

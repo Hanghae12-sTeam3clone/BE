@@ -23,11 +23,11 @@ public class ApiResponse {
                 .build();
     }
 
-    public String checkNullPinRequestDto(Pin pin, PinRequestDto pinRequestDto, String image) throws IOException {
+    public String checkNullPinRequestDto(Pin pin, PinRequestDto pinRequestDto, String image) throws Exception {
         if (pinRequestDto.getImage() == null || pinRequestDto.getImage().isEmpty()) {
-            image = pin.getImage();
+            image = pin.getImageDetail();
         } else {
-            image = s3Uploader.upload(pinRequestDto.getImage());
+            image = s3Uploader.detailUpload(pinRequestDto.getImage());
         }
         if (pinRequestDto.getTitle() == null) {
             pinRequestDto.setTitle(pin.getTitle());

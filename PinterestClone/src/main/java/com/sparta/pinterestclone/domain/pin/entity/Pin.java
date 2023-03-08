@@ -1,5 +1,6 @@
 package com.sparta.pinterestclone.domain.pin.entity;
 
+import com.sparta.pinterestclone.domain.mysave.entity.MySave;
 import com.sparta.pinterestclone.domain.pin.dto.PinRequestDto;
 import com.sparta.pinterestclone.domain.comment.entity.Comment;
 import com.sparta.pinterestclone.domain.like.entity.PinLike;
@@ -15,7 +16,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Pin extends Timestamp{
+public class Pin extends Timestamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,30 +29,38 @@ public class Pin extends Timestamp{
     private String content;
 
     @Column(nullable = false)
-    private String image;
+    private String imageMain;
+
+    @Column(nullable = false)
+    private String imageDetail;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
-    
+
     @OneToMany(mappedBy = "pin")
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "pin")
     private List<PinLike> pinLikes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "pin")
+    private List<MySave> mySaves = new ArrayList<>();
+
     @Builder
-    public Pin(PinRequestDto requestDto,User user, String image) {        //  사용자 클래스 변경 확인 요망
+    public Pin(PinRequestDto requestDto, User user, String imageMain, String imageDetail) {        //  사용자 클래스 변경 확인 요망
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
-        this.image = image;
+        this.imageMain = imageMain;
+        this.imageDetail = imageDetail;
         this.user = user;
     }
 
-    public static Pin of(PinRequestDto requestDto,String image ,User user) {//  사용자 클래스 변경 확인 요망
+    public static Pin of(PinRequestDto requestDto, String imageMain, String imageDetail,User user) {//  사용자 클래스 변경 확인 요망
         return Pin.builder()
                 .requestDto(requestDto)
-                .image(image)
+                .imageMain(imageMain)
+                .imageDetail(imageDetail)
                 .user(user)
                 .build();
     }
@@ -59,6 +68,6 @@ public class Pin extends Timestamp{
     public void update(PinRequestDto pinRequestDto, String image) {
         this.title = pinRequestDto.getTitle();
         this.content = pinRequestDto.getContent();
-        this.image = image;
+        this.imageDetail = image;
     }
 }
