@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface PinLikeRepository extends JpaRepository<PinLike, Long> {
     Optional<PinLike> findByPinAndUser(Pin pin, User user);
+
+    PinLike findByPinIdAndUser(Long pinId, User user);
 }

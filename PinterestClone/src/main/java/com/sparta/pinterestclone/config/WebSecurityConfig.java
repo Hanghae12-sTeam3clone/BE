@@ -57,6 +57,7 @@ public class WebSecurityConfig {
         config.addAllowedMethod("*");
 
         config.addExposedHeader("Authorization");
+        config.addExposedHeader("Refresh_Token");
 
         config.setAllowCredentials(true);
 

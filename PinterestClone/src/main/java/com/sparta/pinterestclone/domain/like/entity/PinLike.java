@@ -28,9 +28,10 @@ public class PinLike {
     public PinLike(User user, Pin pin) {
         this.user = user;
         this.pin = pin;
+
     }
 
-    public static PinLike of(User user, Pin pin) {
+    public static PinLike of(User user, Pin pin ) {
         return PinLike.builder()
                 .user(user)
                 .pin(pin)

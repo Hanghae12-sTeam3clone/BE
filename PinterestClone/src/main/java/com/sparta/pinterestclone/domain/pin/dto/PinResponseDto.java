@@ -20,9 +20,10 @@ public class PinResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private List<CommentResponseDto> comments;
+    private boolean isLike;
 
     @Builder
-    public PinResponseDto(Pin pin, List<CommentResponseDto> comments) {
+    public PinResponseDto(Pin pin, List<CommentResponseDto> comments, boolean isLike) {
         id = pin.getId();
         title = pin.getTitle();
         content = pin.getContent();
@@ -32,6 +33,15 @@ public class PinResponseDto {
         createdAt = pin.getCreatedAt();
         modifiedAt = pin.getModifiedAt();
         this.comments = comments;
+        this.isLike =isLike;
+    }
+
+    public static PinResponseDto of(Pin pin , List<CommentResponseDto> commentResponseDtos, boolean isLike){
+        return PinResponseDto.builder()
+                .pin(pin)
+                .comments(commentResponseDtos)
+                .isLike(isLike)
+                .build();
     }
 
     public static PinResponseDto of(Pin pin , List<CommentResponseDto> commentResponseDtos){
@@ -40,7 +50,6 @@ public class PinResponseDto {
                 .comments(commentResponseDtos)
                 .build();
     }
-
     public static PinResponseDto of(Pin pin){
         return PinResponseDto.builder()
                 .pin(pin)

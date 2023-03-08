@@ -1,6 +1,8 @@
 package com.sparta.pinterestclone.domain.pin.service;
 
 
+import com.sparta.pinterestclone.domain.like.entity.PinLike;
+import com.sparta.pinterestclone.domain.like.repository.PinLikeRepository;
 import com.sparta.pinterestclone.domain.pin.dto.PinRequestDto;
 import com.sparta.pinterestclone.domain.pin.dto.ApiResponse;
 import com.sparta.pinterestclone.domain.comment.dto.CommentResponseDto;
@@ -42,6 +44,7 @@ public class PinService {
     private final ApiResponse apiResponse;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final PinLikeRepository pinLikeRepository;
 
     // Pin 저장
     @Transactional
@@ -64,7 +67,7 @@ public class PinService {
     }
 
     // Pin 상세 조회하기
-    public PinResponseDto getIdPin(Long pinId) {
+    public PinResponseDto getIdPin(Long pinId, User user) {
         Pin pin = pinRepository.findById(pinId).orElseThrow(
                 () -> new ApiException(NOT_FOUND_PIN)
         );
@@ -73,7 +76,12 @@ public class PinService {
         for (Comment c : pin.getComments()) {
             commentResponseDtos.add(new CommentResponseDto(c));
         }
-        return PinResponseDto.of(pin, commentResponseDtos);
+        PinLike pinLike = pinLikeRepository.findByPinIdAndUser(pinId, user);
+        if(pinLike==null){
+            return PinResponseDto.of(pin, commentResponseDtos, false);
+        }else {
+            return PinResponseDto.of(pin, commentResponseDtos, true);
+        }
     }
 
     // Pin 상세 수정
