@@ -16,7 +16,8 @@ public class PinResponseDto {
     private String content;
     private String nickname;
     private int likeCount;
-    private String image;
+    private String imageMain;
+    private String imageDetail;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private List<CommentResponseDto> comments;
@@ -29,7 +30,8 @@ public class PinResponseDto {
         content = pin.getContent();
         nickname = pin.getUser().getNickname();
         likeCount = pin.getPinLikes().size();
-        image = pin.getImage();
+        this.imageMain = pin.getImageMain();
+        this.imageDetail = pin.getImageDetail();
         createdAt = pin.getCreatedAt();
         modifiedAt = pin.getModifiedAt();
         this.comments = comments;
@@ -44,7 +46,8 @@ public class PinResponseDto {
                 .build();
     }
 
-    public static PinResponseDto of(Pin pin , List<CommentResponseDto> commentResponseDtos){
+    public static PinResponseDto of(Pin pin, List<CommentResponseDto> commentResponseDtos){
+
         return PinResponseDto.builder()
                 .pin(pin)
                 .comments(commentResponseDtos)
