@@ -1,5 +1,6 @@
 package com.sparta.pinterestclone.domain.pin.entity;
 
+import com.sparta.pinterestclone.domain.mysave.entity.MySave;
 import com.sparta.pinterestclone.domain.pin.dto.PinRequestDto;
 import com.sparta.pinterestclone.domain.comment.entity.Comment;
 import com.sparta.pinterestclone.domain.like.entity.PinLike;
@@ -39,6 +40,9 @@ public class Pin extends Timestamp{
 
     @OneToMany(mappedBy = "pin")
     private List<PinLike> pinLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "pin")
+    private List<MySave> mySaves = new ArrayList<>();
 
     @Builder
     public Pin(PinRequestDto requestDto,User user, String image) {        //  사용자 클래스 변경 확인 요망
