@@ -17,10 +17,7 @@ import com.sparta.pinterestclone.domain.user.entity.User;
 import com.sparta.pinterestclone.domain.user.entity.UserRoleEnum;
 import com.sparta.pinterestclone.exception.ApiException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
@@ -60,11 +57,10 @@ public class PinService {
 
 //     Pin 전체 조회하기
     @Transactional
-    public List<PinResponseDto> getPintList(int page, int size) {
+    public Slice<PinResponseDto> getPintList(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Pin> pins = pinRepository.findAllByOrderByCreatedAtDesc(pageable);
-        List<PinResponseDto> pinResponseDtos = getDtoList(pins);
-        return pinResponseDtos;
+        Slice<PinResponseDto> pins = pinRepository.findAllByOrderByCreatedAtDesc(pageable);
+        return pins;
     }
 
     // Pin 상세 조회하기
@@ -145,7 +141,7 @@ public class PinService {
 
     }
 
-    // 전체 리스트 가져오기 메서드
+//     전체 리스트 가져오기 메서드
     private static List<PinResponseDto> getDtoList(Page<Pin> pins) {
         List<PinResponseDto> pinResponseDtos = new ArrayList<>();
         for (Pin p : pins) {

@@ -1,5 +1,6 @@
 package com.sparta.pinterestclone.domain.like.controller;
 
+import com.sparta.pinterestclone.config.ApiDocumentResponse;
 import com.sparta.pinterestclone.domain.like.dto.PinLikeResponseDto;
 import com.sparta.pinterestclone.domain.like.service.PinLikeService;
 import com.sparta.pinterestclone.auth.security.UserDetailsImpl;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/pins")
+@ApiDocumentResponse
 public class PinLikeController {
 
     private final PinLikeService pinLikeService;

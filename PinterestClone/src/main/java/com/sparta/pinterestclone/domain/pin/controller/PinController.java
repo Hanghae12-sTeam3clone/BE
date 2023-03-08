@@ -9,6 +9,7 @@ import com.sparta.pinterestclone.auth.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -45,9 +46,9 @@ public class PinController {
 
     @Operation(summary = "Pin 전체 조회 요청", description = "Pin을 모두 조회합니다.", tags = {"Pin"})
     @GetMapping("/pins")
-    public List<PinResponseDto> getPostList(@RequestParam(value = "page") int page,
+    public Slice<PinResponseDto> getPostList(@RequestParam(value = "page") int page,
         @RequestParam(value = "size") int size){
-        List<PinResponseDto> resultList = pinService.getPintList(page, size);
+        Slice<PinResponseDto> resultList = pinService.getPintList(page, size);
         return resultList;
     }
 

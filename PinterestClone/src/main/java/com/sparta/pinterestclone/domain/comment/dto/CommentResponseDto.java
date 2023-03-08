@@ -22,4 +22,11 @@ public class CommentResponseDto {
         createdAt = comment.getCreatedAt();
         modifiedAt = comment.getModifiedAt();
     }
+
+    public static CommentResponseDto from(Comment comment){
+        return CommentResponseDto.builder()
+                .comment(comment)
+                .build();
+
+    }
 }

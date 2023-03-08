@@ -1,15 +1,18 @@
 package com.sparta.pinterestclone.domain.pin.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.sparta.pinterestclone.domain.comment.dto.CommentResponseDto;
 import com.sparta.pinterestclone.domain.comment.entity.Comment;
 import com.sparta.pinterestclone.domain.pin.entity.Pin;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class PinResponseDto {
     private Long id;
     private String title;
@@ -56,4 +59,16 @@ public class PinResponseDto {
                 .build();
     }
 
+    @QueryProjection
+    public PinResponseDto(Pin pin ,List<CommentResponseDto> commentResponseDtos) {
+        id = pin.getId();
+        title = pin.getTitle();
+        content = pin.getContent();
+        nickname = pin.getUser().getNickname();
+        likeCount = pin.getPinLikes().size();
+        image = pin.getImage();
+        createdAt = pin.getCreatedAt();
+        modifiedAt = pin.getModifiedAt();
+        comments = commentResponseDtos;
+    }
 }

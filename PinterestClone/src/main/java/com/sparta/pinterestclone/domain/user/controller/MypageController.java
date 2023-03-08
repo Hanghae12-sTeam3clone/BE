@@ -1,5 +1,6 @@
 package com.sparta.pinterestclone.domain.user.controller;
 
+import com.sparta.pinterestclone.config.ApiDocumentResponse;
 import com.sparta.pinterestclone.domain.pin.dto.PinResponseDto;
 import com.sparta.pinterestclone.domain.pin.service.PinService;
 import com.sparta.pinterestclone.auth.security.UserDetailsImpl;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@ApiDocumentResponse
 public class MypageController {
 
     private final PinService pinService;
