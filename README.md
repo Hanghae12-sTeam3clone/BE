@@ -94,8 +94,8 @@
 
 ![6](https://user-images.githubusercontent.com/107843779/223943044-e284b0db-0241-4635-b6f1-56608feb16bb.png)
 
-## Trouble Shooting
-### 1. github 소통 오류로 인한 프로젝트 초기화 및 파일 초기화 발생. 
+## ⁉️ Trouble Shooting
+### 1. github 소통 오류로 인한 프로젝트 초기화 및 파일 초기화 발생 
   - 깃허브 공부를 새롭게 진행해가면서 하나식 다시 구축해서 해결
   - 수정 및 삭제 @Transactional이 없이 했더니 되지 않아서 코드만 열심히 보다가 나중에 @Transactional을 넣으니 되었습니다. 꼭 확인하자!!
   - PinService에서 처음에 코드를 짰는데 오류가 많이나서 확인해보니 “**팀 내  Git 암살자**”가 계셔서 코드가 변신해 있어서 당황했습니다.
