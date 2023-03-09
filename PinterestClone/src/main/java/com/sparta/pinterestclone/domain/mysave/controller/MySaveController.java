@@ -18,7 +18,7 @@ public class MySaveController {
 
 
     //회원 게시물 저장 및 취소
-    @PostMapping("users/save/{pinId}")
+    @PostMapping("mypage/save/{pinId}")
     public SuccessResponse getSave(@PathVariable Long pinId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return mySaveService.getSave(pinId, userDetails.getUser());
     }

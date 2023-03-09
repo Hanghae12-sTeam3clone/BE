@@ -35,7 +35,6 @@ public class PinRepositoryCustomImpl implements CustomPinRepository{
 
         // DTO로 반환
         List<PinResponseDto> contents = new ArrayList<>();
-
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
         for(Pin pin : results.getResults()) {
             List<Comment> comments = pin.getComments();

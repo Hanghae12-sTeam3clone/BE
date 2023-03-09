@@ -38,13 +38,13 @@ public class Pin extends Timestamp {
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "pin")
+    @OneToMany(mappedBy = "pin",cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "pin")
+    @OneToMany(mappedBy = "pin",cascade = CascadeType.ALL)
     private List<PinLike> pinLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "pin")
+    @OneToMany(mappedBy = "pin",cascade = CascadeType.ALL)
     private List<MySave> mySaves = new ArrayList<>();
 
     @Builder

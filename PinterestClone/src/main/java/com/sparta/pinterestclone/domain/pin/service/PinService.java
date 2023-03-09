@@ -137,6 +137,7 @@ public class PinService {
     }
 
 //     Pin 검색 하기
+    @Transactional
     public List<PinResponseDto> searchPosts(String keyword , int page ,int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Pin> pins = pinRepository.findByTitleContaining(pageable,keyword);

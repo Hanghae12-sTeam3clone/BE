@@ -35,6 +35,7 @@ public class CommentService {
         return new MessageDto("댓글작성 완료", HttpStatus.OK);
     }
 
+    @Transactional
     public MessageDto updateComment(Long commentId, CommentRequestDto requestDto, User user){
         Comment comment =  commentRepository.findById(commentId).orElseThrow(
                 ()  -> new ApiException(NOT_FOUND_COMMENT)
@@ -47,6 +48,7 @@ public class CommentService {
         return new MessageDto("댓글 수정 성공", HttpStatus.OK);
     }
 
+    @Transactional
     public MessageDto deleteComment(Long commentId , User user){
         Comment comment =  commentRepository.findById(commentId).orElseThrow(
                 ()  -> new ApiException(NOT_FOUND_COMMENT)
