@@ -120,6 +120,7 @@ public class PinService {
     }
 
     //  Pin 상세 삭제
+    @Transactional
     public MessageDto delete(User user, Long pinId) {
         Pin pin = pinRepository.findById(pinId).orElseThrow(
                 () -> new ApiException(NOT_FOUND_PIN)
